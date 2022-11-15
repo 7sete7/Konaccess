@@ -12,7 +12,8 @@
   "dependencies": {
     "@fluentui/react": "^8.101.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.3"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
@@ -21,6 +22,7 @@
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
     "@vitejs/plugin-react": "^2.2.0",
+    "sass": "^1.56.1",
     "typescript": "^4.6.4",
     "vite": "^3.2.3"
   }
