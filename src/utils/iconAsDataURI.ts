@@ -1,6 +1,6 @@
 import { IconDefinition, SizeProp } from '@fortawesome/fontawesome-svg-core';
 
-interface ImageDefinitionParams {
+export interface ImageDefinitionParams {
 	color: string;
 	w?: number;
 	h?: number;
