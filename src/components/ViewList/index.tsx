@@ -4,6 +4,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 import xor from 'lodash/xor';
 import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ViewSection } from '../../DAL/Modules';
@@ -14,6 +15,7 @@ const ViewList: React.FC<{ viewSections: ViewSection[] }> = ({ viewSections }) =
 	const [selected, setSelected] = useState<string[]>([]);
 	const [isDrawerOpen, setDrawerOpen] = useState(false);
 	const drawerRef = useRef<HTMLDivElement>();
+	const theme = useTheme();
 
 	const onFieldClick = useCallback(
 		(name: string) => () => {
@@ -30,7 +32,7 @@ const ViewList: React.FC<{ viewSections: ViewSection[] }> = ({ viewSections }) =
 	}, [selected]);
 
 	const accordionOffset = useMemo(
-		() => (drawerRef && isDrawerOpen ? (drawerRef.current?.clientWidth || 0) * 0.7 : 0),
+		() => (drawerRef && isDrawerOpen ? (drawerRef.current?.clientWidth || 0) * 0.6 : 0),
 		[isDrawerOpen, drawerRef],
 	);
 
@@ -40,11 +42,14 @@ const ViewList: React.FC<{ viewSections: ViewSection[] }> = ({ viewSections }) =
 				<Accordion elevation={0} square disableGutters sx={{ paddingBottom: 2, paddingRight: `${accordionOffset}px` }}>
 					<MyAccordionSummary>
 						<Stack direction="row" spacing={3}>
+							<Typography color="primary.main" aria-hidden="true">
+								<i className={`icon-${icon}`} />
+							</Typography>
 							<Typography color="primary.main">{label}</Typography>
 						</Stack>
 					</MyAccordionSummary>
 					<AccordionDetails>
-						<Box pl={5}>
+						<Box pl={3}>
 							<FieldsList {...{ fields, onFieldClick, isSelected }} />
 						</Box>
 					</AccordionDetails>
