@@ -8,7 +8,17 @@ import Home from './views/home';
 
 const router = createBrowserRouter([{ path: '/', element: <Home /> }]);
 
-const theme = createTheme({ typography: { allVariants: {} } });
+const theme = createTheme({
+	components: {
+		MuiAccordion: {
+			styleOverrides: {
+				root: {
+					'&:before': { display: 'none' },
+				},
+			},
+		},
+	},
+});
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>

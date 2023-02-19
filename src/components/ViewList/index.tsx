@@ -1,12 +1,26 @@
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Stack } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
+import MuiAccordionSummary, { AccordionSummaryProps } from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import xor from 'lodash/xor';
 import React, { Fragment, useCallback, useState } from 'react';
 import { ViewSection } from '../../DAL/Modules';
 import FieldsList from './FieldsList';
+
+const AccordionSummary = styled((props: AccordionSummaryProps) => (
+	<MuiAccordionSummary expandIcon={<FontAwesomeIcon icon={faChevronRight} />} {...props} />
+))(({ theme }) => ({
+	border: 0,
+	borderBottom: `2px solid ${theme.palette.primary.main}`,
+	'& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+		transform: 'rotate(90deg)',
+	},
+}));
 
 const ViewList: React.FC<{ viewSections: ViewSection[] }> = ({ viewSections }) => {
 	const [selected, setSelected] = useState<string[]>([]);
@@ -23,9 +37,11 @@ const ViewList: React.FC<{ viewSections: ViewSection[] }> = ({ viewSections }) =
 	return (
 		<Fragment>
 			{viewSections.map(({ label, icon, fields }) => (
-				<Accordion>
+				<Accordion elevation={0} square disableGutters sx={{ paddingBottom: 2 }}>
 					<AccordionSummary>
-						<Typography>{label}</Typography>
+						<Stack direction="row" spacing={3}>
+							<Typography color="primary.main">{label}</Typography>
+						</Stack>
 					</AccordionSummary>
 					<AccordionDetails>
 						<Box pl={5}>
