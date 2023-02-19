@@ -7,7 +7,7 @@ type SectionProps = {
 
 const Section: React.FC<SectionProps> = ({ title, ...props }) => (
 	<Paper {...props} sx={{ padding: 3, width: 1, mt: 3 }}>
-		<Typography variant="h5" color="textPrimary">
+		<Typography variant="h5" color="textPrimary" gutterBottom paddingBottom={2}>
 			{title}
 		</Typography>
 

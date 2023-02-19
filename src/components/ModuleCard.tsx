@@ -18,33 +18,6 @@ interface ModuleCardProps {
 	iconName: string;
 }
 
-// const ModuleCard: React.FC<ModuleCardProps> = ({ title, iconName, version }) => {
-// 	const theme = useTheme();
-// const icon = useMemo<FaIcons.IconDefinition>(() => {
-// 	const name = `fa${capitalize(iconName)}` as keyof typeof FaIcons;
-// 	return (FaIcons[name] ?? FaIcons.faBugSlash) as FaIcons.IconDefinition;
-// }, [iconName]);
-
-// 	return (
-// 		<DocumentCard>
-// 			<DocumentCard>
-// 				<DocumentCardImage
-// 					height={100}
-// 					imageSrc={iconAsDataURI({ color: theme.palette.themeDark, icon, size: '4x' })}
-// 					imageFit={ImageFit.centerContain}
-// 				/>
-
-// 				<DocumentCardTitle title={title} shouldTruncate />
-
-// 				<DocumentCardActivity
-// 					activity={formatDate(version.date)}
-// 					people={[{ name: `Versão ${version.name}`, profileImageSrc: '' }]}
-// 				/>
-// 			</DocumentCard>
-// 		</DocumentCard>
-// 	);
-// };
-
 const ModuleCard: React.FC<ModuleCardProps> = ({ title, iconName, version }) => {
 	const theme = useTheme();
 

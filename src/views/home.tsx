@@ -3,29 +3,25 @@ import Stack from '@mui/material/Stack';
 import { useMemo } from 'react';
 import ModuleCard from '../components/ModuleCard';
 import Section from '../components/Section';
-
-type KonectyViewFields = {
-	icon: string;
-};
-const konectyFields = [];
+import ViewList from '../components/ViewList';
+import { getModules, getModuleViewFor } from '../DAL/Modules';
 
 const Home: React.FC = () => {
-	const modules = useMemo(
-		() => [
-			{ title: 'Imóveis', iconName: 'building', version: { name: '1.3', date: new Date() } },
-			{ title: 'Empreendimentos', iconName: 'flag', version: { name: '1.0', date: new Date() } },
-		],
-		[],
-	);
+	const modules = useMemo(getModules, []);
+	const views = useMemo(() => getModuleViewFor('Product'), []);
 
 	return (
 		<Container maxWidth="lg">
 			<Section title="Módulo">
-				<Stack direction="row" spacing={2} mt={2}>
+				<Stack direction="row" spacing={2}>
 					{modules.map((module, idx) => (
 						<ModuleCard {...module} key={`${module.title}-${idx}`} />
 					))}
 				</Stack>
+			</Section>
+
+			<Section title="Permissões">
+				<ViewList viewSections={views} />
 			</Section>
 		</Container>
 	);
