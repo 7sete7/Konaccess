@@ -1,13 +1,15 @@
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeOptions, ThemeProvider } from '@mui/material/styles';
-import React, { Fragment, useState } from 'react';
+import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material/styles';
+import React, { Fragment, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import HomePage from './HomePage';
 import './styles/index.scss';
 import DefaultTheme from './theme/default';
 
 const App: React.FC = () => {
-	const [theme, setTheme] = useState<ThemeOptions>(DefaultTheme);
+	const [themeOpts, setThemeOpts] = useState<ThemeOptions>(DefaultTheme);
+	const theme = useMemo(() => createTheme(themeOpts), [themeOpts]);
+
 	return (
 		<Fragment>
 			<React.StrictMode>
