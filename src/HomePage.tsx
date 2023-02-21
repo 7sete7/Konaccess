@@ -1,10 +1,9 @@
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import { useMemo } from 'react';
-import ModuleCard from '../components/ModuleCard';
-import Section from '../components/Section';
-import ViewList from '../components/ViewList';
-import { getModules, getModuleViewFor } from '../DAL/Modules';
+import ModuleCard from './components/ModuleCard';
+import Section from './components/Section';
+import { getModules, getModuleViewFor } from './DAL/Modules';
 
 const Home: React.FC = () => {
 	const modules = useMemo(getModules, []);
@@ -20,9 +19,10 @@ const Home: React.FC = () => {
 				</Stack>
 			</Section>
 
-			<Section title="Permissões">
+			{/* <Section title="Permissões">
 				<ViewList viewSections={views} />
-			</Section>
+			</Section> */}
+			<Section title="Papel"></Section>
 		</Container>
 	);
 };

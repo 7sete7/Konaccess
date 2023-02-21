@@ -1,30 +1,23 @@
 import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React from 'react';
+import { ThemeOptions, ThemeProvider } from '@mui/material/styles';
+import React, { Fragment, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import HomePage from './HomePage';
 import './styles/index.scss';
-import Home from './views/home';
+import DefaultTheme from './theme/default';
 
-const router = createBrowserRouter([{ path: '/', element: <Home /> }]);
+const App: React.FC = () => {
+	const [theme, setTheme] = useState<ThemeOptions>(DefaultTheme);
+	return (
+		<Fragment>
+			<React.StrictMode>
+				<CssBaseline />
+				<ThemeProvider theme={theme}>
+					<HomePage />
+				</ThemeProvider>
+			</React.StrictMode>
+		</Fragment>
+	);
+};
 
-const theme = createTheme({
-	components: {
-		MuiAccordion: {
-			styleOverrides: {
-				root: {
-					'&:before': { display: 'none' },
-				},
-			},
-		},
-	},
-});
-
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-	<React.StrictMode>
-		<CssBaseline />
-		<ThemeProvider theme={theme}>
-			<RouterProvider router={router} />
-		</ThemeProvider>
-	</React.StrictMode>,
-);
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<App />);
