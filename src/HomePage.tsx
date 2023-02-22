@@ -35,13 +35,17 @@ const Home: React.FC = () => {
 			</Section> */}
 			<Section title="Papel">
 				{roles.map(({ _id, label, rules }) => (
-					<Accordion expanded={isExpanded(_id)} onChange={onAccordionChange(_id)}>
+					<Accordion expanded={isExpanded(_id)} onChange={onAccordionChange(_id)} key={_id}>
 						<AccordionSummary style={{ backgroundColor: '#eee' }}>{label}</AccordionSummary>
 						<AccordionDetails>
 							<Box p={2}>
 								<Stack direction="row" spacing={2} whiteSpace="nowrap" overflow="auto" display="block">
 									{rules.map(rule => (
-										<Box display="inline-block" sx={{ width: { xs: '90%', sm: '70%', md: '40%', lg: '30%' } }}>
+										<Box
+											display="inline-block"
+											sx={{ width: { xs: '90%', sm: '70%', md: '40%', lg: '30%' } }}
+											key={rule._id}
+										>
 											<RuleCard {...rule} />
 										</Box>
 									))}
