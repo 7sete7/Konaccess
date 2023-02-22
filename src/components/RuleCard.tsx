@@ -1,9 +1,13 @@
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Card, CardActionArea, CardContent, CardHeader, IconButton, SxProps, Theme, Typography } from '@mui/material';
+import { useContext } from 'react';
+import { AppContext } from '../context';
 import { Rule } from '../DAL/Modules';
 
 const RuleCard: React.FC<Rule> = ({ _id, label, fields, totalFields }) => {
+	const [, { selectRule }] = useContext(AppContext);
+
 	return (
 		<Card sx={cardSx} elevation={0}>
 			<CardHeader
@@ -19,7 +23,7 @@ const RuleCard: React.FC<Rule> = ({ _id, label, fields, totalFields }) => {
 				}
 				sx={{ border: 0, borderColor: '', borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
 			/>
-			<CardActionArea>
+			<CardActionArea onClick={() => selectRule({ _id, label, fields, totalFields })}>
 				<CardContent sx={{ bgcolor: 'grey.500', borderBottom: 0, borderTop: 0, borderColor: 'text.primary' }}>
 					<Box p={1} display="flex" flexDirection="column">
 						{fields.map(field => (

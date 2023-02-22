@@ -9,6 +9,21 @@ const DefaultTheme: ThemeOptions = {
 				},
 			},
 		},
+		MuiSelect: {
+			styleOverrides: {
+				standard: {
+					'&::before': {
+						display: 'none',
+					},
+					'&::after': {
+						display: 'none',
+					},
+					paddingBottom: 0,
+					paddingTop: 0,
+					backgroundColor: 'unset',
+				},
+			},
+		},
 	},
 	palette: {
 		grey: {
