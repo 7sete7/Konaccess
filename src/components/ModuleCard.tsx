@@ -5,7 +5,8 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
 import { useTheme } from '@mui/material/styles';
 import capitalize from 'lodash/capitalize';
-import { useMemo } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
+import { AppContext } from '../context';
 import { formatDate } from '../utils/formats';
 import iconAsDataURI from '../utils/iconAsDataURI';
 
@@ -20,6 +21,7 @@ interface ModuleCardProps {
 
 const ModuleCard: React.FC<ModuleCardProps> = ({ title, iconName, version }) => {
 	const theme = useTheme();
+	const [, { selectModule }] = useContext(AppContext);
 
 	const icon = useMemo<string>(() => {
 		const name = `fa${capitalize(iconName)}` as keyof typeof FaIcons;
@@ -28,9 +30,11 @@ const ModuleCard: React.FC<ModuleCardProps> = ({ title, iconName, version }) => 
 		return iconAsDataURI({ color: theme.palette.info.main, icon: iconDef, size: '4x' });
 	}, [iconName]);
 
+	const onCardClick = useCallback(() => selectModule(title), []);
+
 	return (
 		<Card sx={{ minWidth: 250 }}>
-			<CardActionArea>
+			<CardActionArea onClick={onCardClick}>
 				<CardMedia image={icon} height="150" component="img" sx={{ objectFit: 'none', backgroundColor: '#eeeeee' }} />
 				<CardContent>
 					<Typography variant="h6" gutterBottom>
