@@ -1,16 +1,4 @@
-import { faEye, faPencil, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	Accordion,
-	AccordionDetails,
-	AccordionProps,
-	AccordionSummary,
-	Divider,
-	MenuItem,
-	Select,
-	Typography,
-	useTheme,
-} from '@mui/material';
+import { Accordion, AccordionDetails, AccordionProps, AccordionSummary, useTheme } from '@mui/material';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/system/Box';
@@ -20,6 +8,7 @@ import RuleCard from './components/RuleCard';
 import Section from './components/Section';
 import { AppContext } from './context';
 import { getModules, getModuleViewFor, getRolesFor } from './DAL/Modules';
+import RuleSection from './sections/rule';
 
 type AccordionChangeCb = (name: string) => AccordionProps['onChange'];
 
@@ -73,122 +62,7 @@ const Home: React.FC = () => {
 				))}
 			</Section>
 
-			{rule != null && (
-				<Section title={`Regra ${rule.label}`}>
-					<Stack spacing={2} divider={<Divider />}>
-						<Box py={2} px={3}>
-							<Stack spacing={3}>
-								<Box
-									id="input-all"
-									display="flex"
-									flexWrap="nowrap"
-									width="fit-content"
-									sx={{ border: 1, borderColor: 'text.secondary', borderRadius: 3 }}
-								>
-									<Box
-										id="label"
-										py={1}
-										px={2}
-										bgcolor="grey.200"
-										display="flex"
-										sx={{ borderRadius: 3, borderTopRightRadius: 0, borderBottomRightRadius: 3 }}
-										ref={visualizeRef}
-									>
-										<Stack direction="row" spacing={1} alignItems="center" sx={{ color: 'primary.dark' }}>
-											<FontAwesomeIcon icon={faEye} />
-											<Typography color="text.primary" align="right">
-												Pode visualizar
-											</Typography>
-										</Stack>
-									</Box>
-									<Box id="label" py={1} px={2}>
-										<Select variant="standard">
-											<MenuItem value="yes">Sim</MenuItem>
-											<MenuItem value="no">Não</MenuItem>
-											<MenuItem value="only-owner">Apenas o responsável</MenuItem>
-											<MenuItem value="within-group">Quem estiver no mesmo grupo do responsável</MenuItem>
-											<MenuItem value="within-additional-groups">
-												Quem estiver nos grupos adcionais do responsável
-											</MenuItem>
-										</Select>
-									</Box>
-								</Box>
-
-								<Box
-									id="input-all"
-									display="flex"
-									flexWrap="nowrap"
-									width="fit-content"
-									sx={{ border: 1, borderColor: 'text.secondary', borderRadius: 3 }}
-								>
-									<Box
-										id="label"
-										py={1}
-										px={2}
-										bgcolor="grey.200"
-										minWidth={visualizeRef?.current?.clientWidth}
-										display="flex"
-										sx={{ borderRadius: 3, borderTopRightRadius: 0, borderBottomRightRadius: 3 }}
-									>
-										<Stack direction="row" spacing={1} alignItems="center" sx={{ color: 'primary.dark' }}>
-											<FontAwesomeIcon icon={faPencil} />
-											<Typography color="text.primary" align="right">
-												Pode editar
-											</Typography>
-										</Stack>
-									</Box>
-									<Box id="label" py={1} px={2}>
-										<Select variant="standard">
-											<MenuItem value="yes">Sim</MenuItem>
-											<MenuItem value="no">Não</MenuItem>
-											<MenuItem value="only-owner">Apenas o responsável</MenuItem>
-											<MenuItem value="within-group">Quem estiver no mesmo grupo do responsável</MenuItem>
-											<MenuItem value="within-additional-groups">
-												Quem estiver nos grupos adcionais do responsável
-											</MenuItem>
-										</Select>
-									</Box>
-								</Box>
-
-								<Box
-									id="input-all"
-									display="flex"
-									flexWrap="nowrap"
-									width="fit-content"
-									sx={{ border: 1, borderColor: 'text.secondary', borderRadius: 3 }}
-								>
-									<Box
-										id="label"
-										py={1}
-										px={2}
-										bgcolor="grey.200"
-										minWidth={visualizeRef?.current?.clientWidth}
-										display="flex"
-										sx={{
-											borderRadius: 3,
-											borderTopRightRadius: 0,
-											borderBottomRightRadius: 3,
-										}}
-									>
-										<Stack direction="row" spacing={1} alignItems="center" sx={{ color: 'primary.dark' }}>
-											<FontAwesomeIcon icon={faPlusCircle} />
-											<Typography color="text.primary" align="right">
-												Pode criar
-											</Typography>
-										</Stack>
-									</Box>
-									<Box id="label" py={1} px={2}>
-										<Select variant="standard">
-											<MenuItem value="yes">Sim</MenuItem>
-											<MenuItem value="no">Não</MenuItem>
-										</Select>
-									</Box>
-								</Box>
-							</Stack>
-						</Box>
-					</Stack>
-				</Section>
-			)}
+			<RuleSection />
 		</Container>
 	);
 };
