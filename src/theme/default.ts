@@ -12,15 +12,21 @@ const DefaultTheme: ThemeOptions = {
 		MuiSelect: {
 			styleOverrides: {
 				standard: {
+					paddingBottom: 0,
+					paddingTop: 0,
+					backgroundColor: 'unset',
+				},
+			},
+		},
+		MuiInputBase: {
+			styleOverrides: {
+				root: {
 					'&::before': {
 						display: 'none',
 					},
 					'&::after': {
 						display: 'none',
 					},
-					paddingBottom: 0,
-					paddingTop: 0,
-					backgroundColor: 'unset',
 				},
 			},
 		},
