@@ -2,17 +2,33 @@ import { faEye, faPencil, faPlusCircle } from '@fortawesome/free-solid-svg-icons
 import { Container, Divider, Typography, useTheme } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/system/Box';
-import { useContext, useMemo } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import Section from '../../components/Section';
 import ViewFieldsList from '../../components/ViewFieldsList';
 import { AppContext } from '../../context';
 import { getModuleViewFor } from '../../DAL/Modules';
-import RuleSelect from './RuleSelect';
+import RuleSelect, { SelectionOpt } from './RuleSelect';
+
+type OnRuleSelect = (prop: keyof SelectionState['rules']) => (opt: SelectionOpt) => void;
+interface SelectionState {
+	rules: {
+		view?: SelectionOpt;
+		edit?: SelectionOpt;
+		create?: SelectionOpt;
+	};
+	fields: string[];
+}
 
 const RuleSection: React.FC = () => {
 	const [{ rule, module }] = useContext(AppContext);
+	const [selectionState, setSelectionState] = useState<SelectionState>({ rules: {}, fields: [] });
 	const viewSections = useMemo(() => getModuleViewFor(module!), [module]);
 	const theme = useTheme();
+
+	const onRuleSelect = useCallback<OnRuleSelect>(
+		prop => opt => setSelectionState(current => ({ ...current, fields: { ...current.fields, [prop]: opt } })),
+		[setSelectionState],
+	);
 
 	if (rule == null) return null;
 
@@ -26,14 +42,21 @@ const RuleSection: React.FC = () => {
 								label="Pode visualizar"
 								icon={faEye}
 								opts={['yes', 'no', 'only-owner', 'within-group', 'within-additional-groups']}
+								onRuleSelect={onRuleSelect('view')}
 							/>
 							<RuleSelect
 								label="Pode editar"
 								icon={faPencil}
 								opts={['yes', 'no', 'only-owner', 'within-group', 'within-additional-groups']}
+								onRuleSelect={onRuleSelect('edit')}
 							/>
 
-							<RuleSelect label="Pode criar" icon={faPlusCircle} opts={['yes', 'no']} />
+							<RuleSelect
+								label="Pode criar"
+								icon={faPlusCircle}
+								opts={['yes', 'no']}
+								onRuleSelect={onRuleSelect('create')}
+							/>
 						</Stack>
 					</Box>
 				</Stack>

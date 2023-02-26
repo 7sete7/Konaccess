@@ -1,21 +1,20 @@
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { MenuItem, Select, Typography } from '@mui/material';
+import { MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/system/Box';
 import { useCallback, useMemo } from 'react';
 
-interface RuleSelectProps {
+export interface RuleSelectProps {
 	label: string;
 	icon: IconDefinition;
 	opts: ('yes' | 'no' | 'only-owner' | 'within-group' | 'within-additional-groups')[];
+	onRuleSelect: (opt: SelectionOpt) => void;
 }
+export type SelectionOpt = RuleSelectProps['opts'][number];
 
-const RuleSelect: React.FC<RuleSelectProps> = ({ label, icon, opts }) => {
-	const option = useCallback(
-		(opt: RuleSelectProps['opts'][number], node: React.ReactNode) => (opts.includes(opt) ? node : []),
-		[],
-	);
+const RuleSelect: React.FC<RuleSelectProps> = ({ label, icon, opts, onRuleSelect }) => {
+	const option = useCallback((opt: SelectionOpt, node: React.ReactNode) => (opts.includes(opt) ? node : []), [opts]);
 	const selectItems = useMemo<React.ReactNode[]>(
 		() =>
 			Array<React.ReactNode>()
@@ -32,6 +31,11 @@ const RuleSelect: React.FC<RuleSelectProps> = ({ label, icon, opts }) => {
 					),
 				),
 		[opts],
+	);
+
+	const onSelectChange = useCallback<(event: SelectChangeEvent<SelectionOpt>) => void>(
+		({ target }) => onRuleSelect(target.value as SelectionOpt),
+		[onRuleSelect],
 	);
 
 	return (
@@ -56,7 +60,9 @@ const RuleSelect: React.FC<RuleSelectProps> = ({ label, icon, opts }) => {
 				</Stack>
 			</Box>
 			<Box py={1} px={2}>
-				<Select variant="standard">{selectItems}</Select>
+				<Select variant="standard" onChange={onSelectChange}>
+					{selectItems}
+				</Select>
 			</Box>
 		</Box>
 	);
