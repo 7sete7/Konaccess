@@ -13,27 +13,25 @@ interface FieldsListProps {
 	isSelected: (name: string) => boolean;
 }
 
-const FieldsList: React.FC<FieldsListProps> = ({ fields, onFieldClick, isSelected }) => {
-	return (
-		<List>
-			{fields.map(({ label, name }) => (
-				<ListItem key={name}>
-					<ListItemButton onClick={onFieldClick(name)}>
-						<ListItemIcon>
-							<Checkbox
-								checked={isSelected(name)}
-								edge="start"
-								disableRipple
-								tabIndex={-1}
-								inputProps={{ 'aria-labelledby': name }}
-							/>
-						</ListItemIcon>
-						<ListItemText id={name} primary={label} />
-					</ListItemButton>
-				</ListItem>
-			))}
-		</List>
-	);
-};
+const FieldsList: React.FC<FieldsListProps> = ({ fields, onFieldClick, isSelected }) => (
+	<List>
+		{fields.map(({ label, name }) => (
+			<ListItem key={name}>
+				<ListItemButton onClick={onFieldClick(name)}>
+					<ListItemIcon>
+						<Checkbox
+							checked={isSelected(name)}
+							edge="start"
+							disableRipple
+							tabIndex={-1}
+							inputProps={{ 'aria-labelledby': name }}
+						/>
+					</ListItemIcon>
+					<ListItemText id={name} primary={label} />
+				</ListItemButton>
+			</ListItem>
+		))}
+	</List>
+);
 
 export default FieldsList;
