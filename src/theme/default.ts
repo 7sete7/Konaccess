@@ -30,6 +30,13 @@ const DefaultTheme: ThemeOptions = {
 				},
 			},
 		},
+		MuiCssBaseline: {
+			styleOverrides: {
+				body: {
+					backgroundColor: 'rgba(212, 215, 169, 0.12)',
+				},
+			},
+		},
 	},
 	palette: {
 		grey: {

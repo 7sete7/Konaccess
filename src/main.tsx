@@ -14,9 +14,9 @@ const App: React.FC = () => {
 	return (
 		<Fragment>
 			<React.StrictMode>
-				<CssBaseline />
 				<ContextProvider>
 					<ThemeProvider theme={theme}>
+						<CssBaseline />
 						<HomePage />
 					</ThemeProvider>
 				</ContextProvider>
