@@ -3,10 +3,10 @@ import { Container, Divider, Typography, useTheme } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/system/Box';
 import { useCallback, useContext, useMemo, useState } from 'react';
+import { getModuleViewFor } from '../../DAL/Modules';
 import Section from '../../components/Section';
 import ViewFieldsList from '../../components/ViewFieldsList';
 import { AppContext } from '../../context';
-import { getModuleViewFor } from '../../DAL/Modules';
 import RuleSelect, { SelectionOpt } from './RuleSelect';
 
 type OnRuleSelect = (prop: keyof SelectionState['rules']) => (opt: SelectionOpt) => void;
@@ -41,20 +41,20 @@ const RuleSection: React.FC = () => {
 							<RuleSelect
 								label="Pode visualizar"
 								icon={faEye}
-								opts={['yes', 'no', 'only-owner', 'within-group', 'within-additional-groups']}
+								opts={['all', 'none', 'only-owner', 'within-group', 'within-additional-groups']}
 								onRuleSelect={onRuleSelect('view')}
 							/>
 							<RuleSelect
 								label="Pode editar"
 								icon={faPencil}
-								opts={['yes', 'no', 'only-owner', 'within-group', 'within-additional-groups']}
+								opts={['all', 'none', 'only-owner', 'within-group', 'within-additional-groups']}
 								onRuleSelect={onRuleSelect('edit')}
 							/>
 
 							<RuleSelect
 								label="Pode criar"
 								icon={faPlusCircle}
-								opts={['yes', 'no']}
+								opts={['all', 'none']}
 								onRuleSelect={onRuleSelect('create')}
 							/>
 						</Stack>

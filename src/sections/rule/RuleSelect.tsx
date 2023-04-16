@@ -8,7 +8,7 @@ import { useCallback, useMemo } from 'react';
 export interface RuleSelectProps {
 	label: string;
 	icon: IconDefinition;
-	opts: ('yes' | 'no' | 'only-owner' | 'within-group' | 'within-additional-groups')[];
+	opts: ('all' | 'none' | 'only-owner' | 'within-group' | 'within-additional-groups')[];
 	onRuleSelect: (opt: SelectionOpt) => void;
 }
 export type SelectionOpt = RuleSelectProps['opts'][number];
@@ -18,8 +18,8 @@ const RuleSelect: React.FC<RuleSelectProps> = ({ label, icon, opts, onRuleSelect
 	const selectItems = useMemo<React.ReactNode[]>(
 		() =>
 			Array<React.ReactNode>()
-				.concat(option('yes', <MenuItem value="yes">Sim</MenuItem>))
-				.concat(option('no', <MenuItem value="no">Não</MenuItem>))
+				.concat(option('all', <MenuItem value="all">Todos</MenuItem>))
+				.concat(option('none', <MenuItem value="none">Ninguém</MenuItem>))
 				.concat(option('only-owner', <MenuItem value="only-owner">Apenas o responsável</MenuItem>))
 				.concat(
 					option('within-group', <MenuItem value="within-group">Quem estiver no mesmo grupo do responsável</MenuItem>),
