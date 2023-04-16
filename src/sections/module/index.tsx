@@ -1,19 +1,27 @@
 import Stack from '@mui/material/Stack';
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
+import { getModules } from '../../DAL/Modules';
 import ModuleCard from '../../components/ModuleCard';
 import Section from '../../components/Section';
-import { getModules } from '../../DAL/Modules';
 
 const ModuleSection: React.FC = () => {
-	const modules = useMemo(getModules, []);
+	const [modules, setModules] = useState<Konecty.Module[]>([]);
+
+	useEffect(() => {
+		getModules().then(setModules);
+	}, []);
 
 	return (
 		<Section title="Módulo">
-			<Stack direction="row" spacing={2}>
-				{modules.map((module, idx) => (
-					<ModuleCard {...module} key={`${module.title}-${idx}`} />
-				))}
-			</Stack>
+			{modules.length === 0 && <p>No hay módulos disponibles</p>}
+
+			{modules.length > 0 && (
+				<Stack direction="row" spacing={2}>
+					{modules.map((module, idx) => (
+						<ModuleCard {...module} key={`${module.title}-${idx}`} />
+					))}
+				</Stack>
+			)}
 		</Section>
 	);
 };

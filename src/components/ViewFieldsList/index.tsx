@@ -50,7 +50,7 @@ const FieldSection: React.FC<ViewSection & { onFieldClick: OnFieldClick; isSelec
 	isSelected,
 	onFieldClick,
 }) => (
-	<Accordion elevation={0} square disableGutters sx={{ paddingBottom: 2 }}>
+	<Accordion elevation={0} square disableGutters sx={{ paddingBottom: 2 }} key={label}>
 		<MyAccordionSummary>
 			<Stack direction="row" spacing={3}>
 				<Typography color="primary.main" aria-hidden="true">
