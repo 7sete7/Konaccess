@@ -2,9 +2,9 @@ import { Accordion, AccordionDetails, AccordionProps, AccordionSummary } from '@
 import Stack from '@mui/material/Stack';
 import Box from '@mui/system/Box';
 import { useCallback, useMemo, useState } from 'react';
+import { getRolesFor } from '../../DAL/Modules';
 import RuleCard from '../../components/RuleCard';
 import Section from '../../components/Section';
-import { getRolesFor } from '../../DAL/Modules';
 
 type AccordionChangeCb = (name: string) => AccordionProps['onChange'];
 

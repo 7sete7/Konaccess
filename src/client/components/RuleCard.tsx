@@ -2,8 +2,8 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Card, CardActionArea, CardContent, CardHeader, IconButton, SxProps, Theme, Typography } from '@mui/material';
 import { useContext } from 'react';
+import { Rule } from '../../DAL/Modules';
 import { AppContext } from '../context';
-import { Rule } from '../DAL/Modules';
 
 const RuleCard: React.FC<Rule> = ({ _id, label, fields, totalFields }) => {
 	const [, { selectRule }] = useContext(AppContext);

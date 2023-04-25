@@ -1,4 +1,4 @@
-declare namespace Konecty {
+declare namespace KonectyClient {
 	export type ViewField = {
 		label: string;
 		type: 'text' | 'picklist';

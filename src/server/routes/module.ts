@@ -1,7 +1,7 @@
 import { publicProcedure, router } from '../trpc';
 
 const ModuleRoutes = router({
-	getAll: publicProcedure.query<Konecty.Module[]>(async () => {
+	getAll: publicProcedure.query<KonectyClient.Module[]>(async () => {
 		await new Promise(resolve => setTimeout(resolve, 1000));
 		return [
 			{ title: 'Quadrados', iconName: 'building', version: { name: '1.3', date: new Date() } },

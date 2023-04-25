@@ -1,5 +1,5 @@
 import { createContext, useCallback, useMemo, useState } from 'react';
-import { Rule } from '../DAL/Modules';
+import { Rule } from '../../DAL/Modules';
 
 interface AppState {
 	module: string | null;

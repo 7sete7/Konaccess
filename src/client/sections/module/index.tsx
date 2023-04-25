@@ -5,7 +5,7 @@ import ModuleCard from '../../components/ModuleCard';
 import Section from '../../components/Section';
 
 const ModuleSection: React.FC = () => {
-	const [modules, setModules] = useState<Konecty.Module[]>([]);
+	const [modules, setModules] = useState<KonectyClient.Module[]>([]);
 
 	useEffect(() => {
 		getModules().then(setModules);

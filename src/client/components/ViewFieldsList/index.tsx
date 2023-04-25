@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import xor from 'lodash/xor';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
-import { ViewField, ViewSection } from '../../DAL/Modules';
+import { ViewField, ViewSection } from '../../../DAL/Modules';
 import FieldsList from './FieldsList';
 import MyAccordionSummary from './MyAccordionSummary';
 
