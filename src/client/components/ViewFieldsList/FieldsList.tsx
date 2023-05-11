@@ -5,10 +5,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import React from 'react';
-import type { ViewField } from '../../../DAL/Modules';
 
 interface FieldsListProps {
-	fields: ViewField[];
+	fields: KonectyClient.ViewField[];
 	onFieldClick: (name: string) => React.MouseEventHandler;
 	isSelected: (name: string) => boolean;
 }

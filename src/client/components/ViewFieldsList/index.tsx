@@ -5,14 +5,13 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import xor from 'lodash/xor';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
-import { ViewField, ViewSection } from '../../../DAL/Modules';
 import FieldsList from './FieldsList';
 import MyAccordionSummary from './MyAccordionSummary';
 
 type OnFieldClick = (name: string) => () => void;
 type IsSelected = (name: string) => boolean;
 
-const ViewList: React.FC<{ viewSections: ViewSection[] }> = ({ viewSections }) => {
+const ViewList: React.FC<{ viewSections: KonectyClient.ViewSection[] }> = ({ viewSections }) => {
 	const [selected, setSelected] = useState<string[]>([]);
 
 	const onFieldClick = useCallback<OnFieldClick>(
@@ -26,7 +25,7 @@ const ViewList: React.FC<{ viewSections: ViewSection[] }> = ({ viewSections }) =
 
 	const selectedFields = useMemo(
 		() =>
-			viewSections.reduce<ViewField[]>((acc, { fields }) => {
+			viewSections.reduce<KonectyClient.ViewField[]>((acc, { fields }) => {
 				const selectedFields = fields.filter(f => isSelected(f.name));
 				return selectedFields.length ? acc.concat(selectedFields) : acc;
 			}, []),
@@ -43,7 +42,7 @@ const ViewList: React.FC<{ viewSections: ViewSection[] }> = ({ viewSections }) =
 	);
 };
 
-const FieldSection: React.FC<ViewSection & { onFieldClick: OnFieldClick; isSelected: IsSelected }> = ({
+const FieldSection: React.FC<KonectyClient.ViewSection & { onFieldClick: OnFieldClick; isSelected: IsSelected }> = ({
 	icon,
 	label,
 	fields,
