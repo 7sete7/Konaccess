@@ -8,10 +8,10 @@ import { useCallback, useMemo } from 'react';
 export interface RuleSelectProps {
 	label: string;
 	icon: IconDefinition;
-	opts: ('all' | 'none' | 'only-owner' | 'within-group' | 'within-additional-groups')[];
+	opts: MetaObjects.AccessRule['rule'][];
 	onRuleSelect: (opt: SelectionOpt) => void;
 }
-export type SelectionOpt = RuleSelectProps['opts'][number];
+export type SelectionOpt = MetaObjects.AccessRule['rule'];
 
 const RuleSelect: React.FC<RuleSelectProps> = ({ label, icon, opts, onRuleSelect }) => {
 	const option = useCallback((opt: SelectionOpt, node: React.ReactNode) => (opts.includes(opt) ? node : []), [opts]);
