@@ -25,4 +25,3 @@ const closeClient = async () => {
 
 process.on('exit', closeClient);
 process.on('SIGINT', closeClient);
-process.on('SIGKILL', closeClient);
