@@ -8,10 +8,10 @@ import { useCallback, useMemo } from 'react';
 export interface RuleSelectProps {
 	label: string;
 	icon: IconDefinition;
-	opts: MetaObjects.AccessRule['rule'][];
+	opts: MetaObjects.Rule[];
 	onRuleSelect: (opt: SelectionOpt) => void;
 }
-export type SelectionOpt = MetaObjects.AccessRule['rule'];
+export type SelectionOpt = MetaObjects.Rule;
 
 const RuleSelect: React.FC<RuleSelectProps> = ({ label, icon, opts, onRuleSelect }) => {
 	const option = useCallback((opt: SelectionOpt, node: React.ReactNode) => (opts.includes(opt) ? node : []), [opts]);
@@ -29,7 +29,8 @@ const RuleSelect: React.FC<RuleSelectProps> = ({ label, icon, opts, onRuleSelect
 						'within-additional-groups',
 						<MenuItem value="within-additional-groups">Quem estiver nos grupos adcionais do responsável</MenuItem>,
 					),
-				),
+				)
+				.concat(option('inherit', <MenuItem value="inherit">Herdar</MenuItem>)),
 		[opts],
 	);
 

@@ -41,20 +41,20 @@ const RuleSection: React.FC = () => {
 							<RuleSelect
 								label="Pode visualizar"
 								icon={faEye}
-								opts={['all', 'none', 'only-owner', 'within-group', 'within-additional-groups']}
+								opts={['all', 'none', 'only-owner', 'within-group', 'within-additional-groups', 'inherit']}
 								onRuleSelect={onRuleSelect('view')}
 							/>
 							<RuleSelect
 								label="Pode editar"
 								icon={faPencil}
-								opts={['all', 'none', 'only-owner', 'within-group', 'within-additional-groups']}
+								opts={['all', 'none', 'only-owner', 'within-group', 'within-additional-groups', 'inherit']}
 								onRuleSelect={onRuleSelect('edit')}
 							/>
 
 							<RuleSelect
 								label="Pode criar"
 								icon={faPlusCircle}
-								opts={['all', 'none']}
+								opts={['all', 'none', 'inherit']}
 								onRuleSelect={onRuleSelect('create')}
 							/>
 						</Stack>
