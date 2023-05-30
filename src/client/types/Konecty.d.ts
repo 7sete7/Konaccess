@@ -31,5 +31,12 @@ declare namespace KonectyClient {
 		label: string;
 		fields: string[];
 		totalFields: number;
+		options: RuleOptions;
+	}
+
+	export interface RuleOptions {
+		view?: MetaObjects.Rule;
+		edit?: MetaObjects.Rule;
+		create?: MetaObjects.Rule;
 	}
 }

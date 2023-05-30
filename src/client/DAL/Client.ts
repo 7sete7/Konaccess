@@ -1,5 +1,5 @@
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
-import type { Routes } from '../server/routes';
+import type { Routes } from '../../server/routes';
 
 let client: ReturnType<typeof createTRPCProxyClient<Routes>>;
 

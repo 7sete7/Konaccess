@@ -1,7 +1,7 @@
 import { Accordion, AccordionDetails, AccordionProps, AccordionSummary } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/system/Box';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getRolesFor } from '../../DAL/Modules';
 import RuleCard from '../../components/RuleCard';
 import Section from '../../components/Section';
@@ -10,10 +10,15 @@ type AccordionChangeCb = (name: string) => AccordionProps['onChange'];
 
 const RoleSection: React.FC = () => {
 	const [expanded, setExpanded] = useState<string | null>(null);
-	const roles = useMemo(() => getRolesFor('Product'), []);
+	const [roles, setRoles] = useState<KonectyClient.Role[]>([]);
+	// const roles = useMemo(() => getRolesFor('Product'), []);
 
 	const onAccordionChange = useCallback<AccordionChangeCb>(name => (_, isExpanded) => setExpanded(isExpanded ? name : null), []);
 	const isExpanded = useCallback((name: string) => expanded === name, [expanded]);
+
+	useEffect(() => {
+		getRolesFor('Product').then(setRoles);
+	}, []);
 
 	return (
 		<Section title="Papel">

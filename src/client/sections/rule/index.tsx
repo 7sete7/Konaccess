@@ -11,11 +11,7 @@ import RuleSelect, { SelectionOpt } from './RuleSelect';
 
 type OnRuleSelect = (prop: keyof SelectionState['rules']) => (opt: SelectionOpt) => void;
 interface SelectionState {
-	rules: {
-		view?: SelectionOpt;
-		edit?: SelectionOpt;
-		create?: SelectionOpt;
-	};
+	rules: KonectyClient.RuleOptions;
 	fields: string[];
 }
 

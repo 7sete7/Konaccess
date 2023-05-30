@@ -25,4 +25,13 @@ declare namespace MetaObjects {
 			[key in 'READ' | 'CREATE' | 'UPDATE']: Rule;
 		};
 	}
+
+	export interface Meta {
+		_id: string;
+		icon: string;
+		label: {
+			en: string;
+			pt_BR: string;
+		};
+	}
 }

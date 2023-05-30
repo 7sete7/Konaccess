@@ -69,4 +69,7 @@ export default class KonAccess {
 
 		return Object.values(rulesObj);
 	}
+
+	public getRoleName = () => this.roleName;
+	public getRules = () => this.originalAccess?.rules ?? [];
 }

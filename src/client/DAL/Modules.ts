@@ -29,12 +29,11 @@ export const getModules = async (): Promise<KonectyClient.Module[]> => {
 };
 
 const rules: KonectyClient.Rule[] = [
-	{ _id: 'rule-1', label: 'Apenas visualização', fields: ['Situação', 'Estágio do cadastramento'], totalFields: 5 },
-	{ _id: 'rule-2', label: 'Aberto', fields: ['Imagens', 'Elevadores'], totalFields: 5 },
+	{ _id: 'rule-1', label: 'Apenas visualização', fields: ['Situação', 'Estágio do cadastramento'], totalFields: 5, options: {} },
+	{ _id: 'rule-2', label: 'Aberto', fields: ['Imagens', 'Elevadores'], totalFields: 5, options: {} },
 ];
 
-export const getRolesFor = (moduleName: string): KonectyClient.Role[] => [
-	{ _id: 'abc123', label: 'Corretor', rules },
-	{ _id: 'def456', label: 'Gerente', rules: [] },
-	{ _id: 'ghi789', label: 'Diretor Comercial', rules: [] },
-];
+export const getRolesFor = async (moduleName: string): Promise<KonectyClient.Role[]> => {
+	const roles = await getClient().modules.getRolesFor.query(moduleName);
+	return roles;
+};
