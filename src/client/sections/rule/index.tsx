@@ -16,20 +16,24 @@ interface SelectionState {
 }
 
 const RuleSection: React.FC = () => {
-	const [{ rule, module }] = useContext(AppContext);
+	const [{ rule, module }, { updateRule }] = useContext(AppContext);
 	const [selectionState, setSelectionState] = useState<SelectionState>({ rules: {}, fields: [] });
 	const viewSections = useMemo(() => getModuleViewFor(module!), [module]);
 	const theme = useTheme();
 
 	const onRuleSelect = useCallback<OnRuleSelect>(
-		prop => opt => setSelectionState(current => ({ ...current, fields: { ...current.fields, [prop]: opt } })),
+		prop => opt => setSelectionState(current => ({ ...current, rules: { ...current.rules, [prop]: opt } })),
 		[setSelectionState],
 	);
+
+	const onTitleChange = useCallback((newTitle: string) => {
+		updateRule({ label: newTitle.replace(/^Regra /, '') });
+	}, []);
 
 	if (rule == null) return null;
 
 	return (
-		<Section title={`Regra ${rule.label}`}>
+		<Section title={`Regra ${rule.label}`} titleEditable onTitleChange={onTitleChange}>
 			<Container maxWidth="md">
 				<Stack spacing={2} divider={<Divider />}>
 					<Box py={2} px={3}>
