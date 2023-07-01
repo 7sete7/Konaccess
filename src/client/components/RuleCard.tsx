@@ -2,10 +2,11 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Card, CardActionArea, CardContent, CardHeader, IconButton, SxProps, Theme, Typography } from '@mui/material';
 import { useContext } from 'react';
-import { Rule } from '../../DAL/Modules';
 import { AppContext } from '../context';
 
-const RuleCard: React.FC<Rule> = ({ _id, label, fields, totalFields }) => {
+const MAX_DISPLAY_FIELDS = 5;
+
+const RuleCard: React.FC<KonectyClient.Rule> = ({ _id, label, fields, totalFields }) => {
 	const [, { selectRule }] = useContext(AppContext);
 
 	return (
@@ -26,14 +27,14 @@ const RuleCard: React.FC<Rule> = ({ _id, label, fields, totalFields }) => {
 			<CardActionArea onClick={() => selectRule({ _id, label, fields, totalFields })}>
 				<CardContent sx={{ bgcolor: 'grey.500', borderBottom: 0, borderTop: 0, borderColor: 'text.primary' }}>
 					<Box p={1} display="flex" flexDirection="column">
-						{fields.map(field => (
+						{fields.slice(0, MAX_DISPLAY_FIELDS).map(field => (
 							<Typography variant="caption" fontSize="12pt" color="grey.700" key={field}>
 								{field}
 							</Typography>
 						))}
-						{totalFields > fields.length && (
+						{totalFields > MAX_DISPLAY_FIELDS && (
 							<Typography variant="caption" fontSize="12pt" color="grey.700">
-								+ {totalFields - fields.length}
+								+ {totalFields - MAX_DISPLAY_FIELDS}
 							</Typography>
 						)}
 					</Box>
