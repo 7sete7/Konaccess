@@ -34,4 +34,30 @@ declare namespace MetaObjects {
 			pt_BR: string;
 		};
 	}
+
+	export interface View {
+		_id: `${string}:view:${string}`;
+		name: string;
+		visuals: ViewVisual[];
+	}
+
+	type ViewVisual = {
+		label: {
+			pt_BR: string;
+			en: string;
+		};
+		style: {
+			icon: string;
+		};
+		type: string;
+		visuals: ViewField[];
+	};
+
+	type ViewField = {
+		type: string;
+		fieldName: string;
+		style?: {
+			readOnlyVersion: boolean;
+		};
+	};
 }

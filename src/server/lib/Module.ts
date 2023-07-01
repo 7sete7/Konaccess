@@ -17,6 +17,7 @@ export default class Module {
 	};
 
 	private accesses: Map<string, Access> = new Map();
+	private view: MetaObjects.View | null = null;
 
 	constructor(moduleName: string) {
 		this.moduleName = moduleName;
@@ -31,6 +32,7 @@ export default class Module {
 		this.label = module.label.pt_BR;
 
 		await this.loadAccesses();
+		await this.loadView();
 		return this;
 	}
 
@@ -48,5 +50,12 @@ export default class Module {
 
 			this.accesses.set(roleName, access);
 		}
+	}
+
+	private async loadView() {
+		const db = await getDB();
+		const view = await db.collection<MetaObjects.View>('MetaObjects').findOne({ _id: `${this.moduleName}:view:Default` });
+
+		this.view = view;
 	}
 }
