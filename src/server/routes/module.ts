@@ -19,7 +19,7 @@ const ModuleRoutes = router({
 
 			for (const access of module.getAccessess().values()) {
 				roles.push({
-					_id: '',
+					_id: `${moduleName}:${access.getRoleName()}`,
 					label: access.getRoleName(),
 					rules: access.getRules().map(convertRuleToClient),
 				});

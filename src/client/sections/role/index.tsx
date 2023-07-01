@@ -17,7 +17,7 @@ const RoleSection: React.FC = () => {
 	const isExpanded = useCallback((name: string) => expanded === name, [expanded]);
 
 	useEffect(() => {
-		getRolesFor('Product').then(setRoles);
+		getRolesFor('Development').then(setRoles);
 	}, []);
 
 	return (
