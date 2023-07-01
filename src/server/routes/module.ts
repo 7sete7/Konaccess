@@ -1,21 +1,22 @@
 import { z } from 'zod';
 import Module from '../lib/Module';
+import { AllModules } from '../store/all_modules';
 import { publicProcedure, router } from '../trpc';
 
 const ModuleRoutes = router({
 	getAll: publicProcedure.query<KonectyClient.Module[]>(async () => {
-		await new Promise(resolve => setTimeout(resolve, 1000));
-		return [
-			{ title: 'Quadrados', iconName: 'building', version: { name: '1.3', date: new Date() } },
-			{ title: 'Empreendimentos', iconName: 'flag', version: { name: '1.0', date: new Date() } },
-		];
+		const modules: KonectyClient.Module[] = [...AllModules.values()].map(convertModuleToClient);
+
+		return modules;
 	}),
 
 	getRolesFor: publicProcedure
 		.input(z.string({ description: 'Module name' }))
 		.query<KonectyClient.Role[]>(async ({ input: moduleName }) => {
-			const module = await new Module(moduleName).initialize();
+			const module = AllModules.get(moduleName);
 			const roles: KonectyClient.Role[] = [];
+
+			if (module == null) throw new Error('Module not found');
 
 			for (const access of module.getAccessess().values()) {
 				roles.push({
@@ -39,6 +40,12 @@ const convertRuleToClient = (rule: MetaObjects.AccessRule): KonectyClient.Rule =
 		edit: rule.rule.UPDATE,
 		create: rule.rule.CREATE,
 	},
+});
+
+const convertModuleToClient = (module: Module): KonectyClient.Module => ({
+	title: module.label,
+	iconName: module.icon,
+	version: module.version,
 });
 
 export default ModuleRoutes;

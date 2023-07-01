@@ -2,6 +2,7 @@ import cors from '@fastify/cors';
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify';
 import fastify from 'fastify';
 import Router from './routes';
+import fetchAllModules from './store/all_modules';
 
 const server = fastify({ logger: true });
 
@@ -20,4 +21,5 @@ server.listen({ port: PORT }, (err, address) => {
 		process.exit(1);
 	}
 	console.log(`Server listening at ${address}`);
+	fetchAllModules();
 });
