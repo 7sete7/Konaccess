@@ -33,7 +33,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({ title, iconName, version }) => 
 	const onCardClick = useCallback(() => selectModule(title), []);
 
 	return (
-		<Card sx={{ minWidth: 250 }}>
+		<Card sx={{ minWidth: 250, height: 'fit-content' }}>
 			<CardActionArea onClick={onCardClick}>
 				<CardMedia image={icon} height="150" component="img" sx={{ objectFit: 'none', backgroundColor: '#eeeeee' }} />
 				<CardContent>

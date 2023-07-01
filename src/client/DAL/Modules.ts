@@ -20,12 +20,15 @@ export const getModuleViewFor = (moduleName: string): KonectyClient.ViewSection[
 ];
 
 export const getModules = async (): Promise<KonectyClient.Module[]> => {
-	const mods = await getClient().modules.getAll.query();
-	console.log(mods);
-	return [
-		{ title: 'Imóveis', iconName: 'building', version: { name: '1.3', date: new Date() } },
-		{ title: 'Empreendimentos', iconName: 'flag', version: { name: '1.0', date: new Date() } },
-	];
+	const allModules = await getClient().modules.getAll.query();
+
+	return allModules.map(module => ({
+		...module,
+		version: {
+			...module.version,
+			date: new Date(module.version.date),
+		},
+	}));
 };
 
 const rules: KonectyClient.Rule[] = [
