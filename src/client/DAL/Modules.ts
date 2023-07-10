@@ -1,6 +1,11 @@
 import getClient from './Client';
 
-export const getModuleViewFor = (moduleName: string): KonectyClient.ViewSection[] => [
+export const getModuleViewFor = async (moduleName: string): Promise<KonectyClient.ViewSection[]> => {
+	const view = await getClient().modules.getViewFor.query(moduleName);
+	return view;
+};
+
+const view = [
 	{
 		label: 'Informações',
 		icon: 'info-sign',

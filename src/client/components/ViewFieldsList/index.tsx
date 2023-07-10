@@ -4,24 +4,43 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import xor from 'lodash/xor';
-import React, { Fragment, useCallback, useMemo, useState } from 'react';
+import React, { Fragment, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { getModuleViewFor } from '../../DAL/Modules';
+import { AppContext } from '../../context';
 import FieldsList from './FieldsList';
 import MyAccordionSummary from './MyAccordionSummary';
 
 type OnFieldClick = (name: string) => () => void;
 type IsSelected = (name: string) => boolean;
 
-const ViewList: React.FC<{ viewSections: KonectyClient.ViewSection[] }> = ({ viewSections }) => {
+interface ViewListProps {
+	onSelectedChanged: (newSelecteds: string[]) => void;
+}
+
+const ViewList: React.FC<ViewListProps> = ({ onSelectedChanged }) => {
+	const [{ module }] = useContext(AppContext);
+	const [viewSections, setViewSections] = useState<KonectyClient.ViewSection[]>([]);
 	const [selected, setSelected] = useState<string[]>([]);
 
 	const onFieldClick = useCallback<OnFieldClick>(
 		name => () => {
-			setSelected(selecteds => xor(selecteds, [name]));
+			setSelected(selecteds => {
+				const newValue = xor(selecteds, [name]);
+				onSelectedChanged(newValue);
+
+				return newValue;
+			});
 		},
 		[setSelected],
 	);
 
 	const isSelected = useCallback<IsSelected>(name => selected.includes(name), [selected]);
+
+	useEffect(() => {
+		if (module != null) {
+			getModuleViewFor(module).then(setViewSections);
+		}
+	}, [module]);
 
 	const selectedFields = useMemo(
 		() =>

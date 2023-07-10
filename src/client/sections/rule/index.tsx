@@ -10,6 +10,8 @@ import { AppContext } from '../../context';
 import RuleSelect, { SelectionOpt } from './RuleSelect';
 
 type OnRuleSelect = (prop: keyof SelectionState['rules']) => (opt: SelectionOpt) => void;
+type OnFieldSelect = (fields: string[]) => void;
+
 interface SelectionState {
 	rules: KonectyClient.RuleOptions;
 	fields: string[];
@@ -23,6 +25,11 @@ const RuleSection: React.FC = () => {
 
 	const onRuleSelect = useCallback<OnRuleSelect>(
 		prop => opt => setSelectionState(current => ({ ...current, rules: { ...current.rules, [prop]: opt } })),
+		[setSelectionState],
+	);
+
+	const onFieldSelect = useCallback<OnFieldSelect>(
+		fields => setSelectionState(current => ({ ...current, fields })),
 		[setSelectionState],
 	);
 
@@ -69,7 +76,7 @@ const RuleSection: React.FC = () => {
 					Campos
 				</Typography>
 				<Container maxWidth="sm">
-					<ViewFieldsList viewSections={viewSections} />
+					<ViewFieldsList onSelectedChanged={onFieldSelect} />
 				</Container>
 			</Box>
 		</Section>
