@@ -30,14 +30,14 @@ declare namespace MetaObjects {
 		_id: string;
 		icon: string;
 		fields: {
-			[key: string]: WithDualLabel;
+			[key: string]: Partial<WithDualLabel>;
 		};
 	}
 
 	export interface View {
 		_id: `${string}:view:${string}`;
 		name: string;
-		visuals: ViewVisual[];
+		visuals: [{ visuals: ViewVisual[]; type: string }];
 	}
 
 	type ViewVisual = {

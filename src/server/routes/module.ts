@@ -35,7 +35,15 @@ const ModuleRoutes = router({
 			const module = AllModules.get(moduleName);
 			if (module == null) throw new Error('Module not found');
 
-			return module.getView().visuals.map(convertViewToClient(module));
+			try {
+				return module
+					.getView()
+					.visuals.filter(({ type }) => type === 'visualGroup')[0]
+					.visuals.map(convertViewToClient(module));
+			} catch (e) {
+				console.error(e);
+				return [];
+			}
 		}),
 });
 

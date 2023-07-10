@@ -75,6 +75,6 @@ export default class Module {
 	public getFieldLabel(fieldName: string) {
 		const field = this.fields.get(fieldName);
 
-		return field ? field.label.pt_BR : fieldName;
+		return field && field.label ? field.label.pt_BR : fieldName;
 	}
 }
