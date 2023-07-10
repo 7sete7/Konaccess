@@ -26,12 +26,11 @@ declare namespace MetaObjects {
 		};
 	}
 
-	export interface Meta {
+	export interface Meta extends WithDualLabel {
 		_id: string;
 		icon: string;
-		label: {
-			en: string;
-			pt_BR: string;
+		fields: {
+			[key: string]: WithDualLabel;
 		};
 	}
 
@@ -42,22 +41,25 @@ declare namespace MetaObjects {
 	}
 
 	type ViewVisual = {
-		label: {
-			pt_BR: string;
-			en: string;
-		};
 		style: {
 			icon: string;
 		};
 		type: string;
 		visuals: ViewField[];
-	};
+	} & WithDualLabel;
 
 	type ViewField = {
 		type: string;
 		fieldName: string;
 		style?: {
 			readOnlyVersion: boolean;
+		};
+	};
+
+	type WithDualLabel = {
+		label: {
+			pt_BR: string;
+			en: string;
 		};
 	};
 }

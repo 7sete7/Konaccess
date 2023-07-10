@@ -17,8 +17,9 @@ export default class Module {
 		date: new Date(),
 	};
 
+	public fields: Map<string, MetaObjects.Meta['fields'][string]> = new Map();
 	private accesses: Map<string, Access> = new Map();
-	private view: MetaObjects.View | null = null;
+	private view!: MetaObjects.View;
 
 	constructor(moduleName: string) {
 		this.moduleName = moduleName;
@@ -33,6 +34,10 @@ export default class Module {
 		this.icon = module.icon;
 		this.label = module.label.pt_BR;
 
+		for (const fieldName in module.fields) {
+			this.fields.set(fieldName, module.fields[fieldName]);
+		}
+
 		await this.loadAccesses();
 		await this.loadView();
 		return this;
@@ -40,6 +45,10 @@ export default class Module {
 
 	public getAccessess() {
 		return this.accesses;
+	}
+
+	public getView() {
+		return this.view;
 	}
 
 	private async loadAccesses() {
@@ -58,6 +67,14 @@ export default class Module {
 		const db = await getDB();
 		const view = await db.collection<MetaObjects.View>('MetaObjects').findOne({ _id: `${this.moduleName}:view:Default` });
 
+		if (view == null) throw new Error(`Module ${this.moduleName} has no view!`);
+
 		this.view = view;
+	}
+
+	public getFieldLabel(fieldName: string) {
+		const field = this.fields.get(fieldName);
+
+		return field ? field.label.pt_BR : fieldName;
 	}
 }

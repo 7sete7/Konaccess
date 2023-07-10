@@ -12,8 +12,12 @@ export default async function fetchAllModules() {
 		.find({ type: 'document' }, { projection: { _id: 1 }, sort: { 'label.pt_BR': 1 } });
 
 	for await (const moduleDoc of cursor) {
-		const module = await new Module(moduleDoc._id).initialize();
-		AllModules.set(moduleDoc._id, module);
+		try {
+			const module = await new Module(moduleDoc._id).initialize();
+			AllModules.set(moduleDoc._id, module);
+		} catch (e) {
+			console.log((e as Error).message);
+		}
 	}
 
 	console.log('Finished fetching all modules');

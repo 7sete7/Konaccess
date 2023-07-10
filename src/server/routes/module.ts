@@ -28,6 +28,15 @@ const ModuleRoutes = router({
 
 			return roles;
 		}),
+
+	getViewFor: publicProcedure
+		.input(z.string({ description: 'Module name' }))
+		.query<KonectyClient.ViewSection[]>(async ({ input: moduleName }) => {
+			const module = AllModules.get(moduleName);
+			if (module == null) throw new Error('Module not found');
+
+			return module.getView().visuals.map(convertViewToClient(module));
+		}),
 });
 
 const convertRuleToClient = (rule: MetaObjects.AccessRule): KonectyClient.Rule => ({
@@ -48,6 +57,14 @@ const convertModuleToClient = (module: Module): KonectyClient.Module => ({
 	iconName: module.icon,
 	version: module.version,
 });
+
+const convertViewToClient =
+	(module: Module) =>
+	(visuals: MetaObjects.ViewVisual): KonectyClient.ViewSection => ({
+		icon: visuals.style.icon,
+		label: visuals.label.pt_BR,
+		fields: visuals.visuals.map(({ fieldName }) => ({ label: module.getFieldLabel(fieldName), name: fieldName, type: 'text' })),
+	});
 
 export default ModuleRoutes;
 export type ModuleRoutes = typeof ModuleRoutes;
