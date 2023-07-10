@@ -10,16 +10,7 @@ import { AppContext } from '../context';
 import { formatDate } from '../utils/formats';
 import iconAsDataURI from '../utils/iconAsDataURI';
 
-interface ModuleCardProps {
-	title: string;
-	version: {
-		name: string;
-		date: Date;
-	};
-	iconName: string;
-}
-
-const ModuleCard: React.FC<ModuleCardProps> = ({ title, iconName, version }) => {
+const ModuleCard: React.FC<KonectyClient.Module> = ({ _id, title, iconName, version }) => {
 	const theme = useTheme();
 	const [, { selectModule }] = useContext(AppContext);
 
@@ -30,7 +21,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({ title, iconName, version }) => 
 		return iconAsDataURI({ color: theme.palette.info.main, icon: iconDef, size: '4x' });
 	}, [iconName]);
 
-	const onCardClick = useCallback(() => selectModule(title), []);
+	const onCardClick = useCallback(() => selectModule(_id), []);
 
 	return (
 		<Card sx={{ minWidth: 250, height: 'fit-content' }}>

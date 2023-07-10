@@ -12,6 +12,7 @@ declare namespace KonectyClient {
 	}
 
 	export interface Module {
+		_id: string;
 		title: string;
 		iconName: string;
 		version: {

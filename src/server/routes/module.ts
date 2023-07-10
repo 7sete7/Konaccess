@@ -43,6 +43,7 @@ const convertRuleToClient = (rule: MetaObjects.AccessRule): KonectyClient.Rule =
 });
 
 const convertModuleToClient = (module: Module): KonectyClient.Module => ({
+	_id: module._id,
 	title: module.label,
 	iconName: module.icon,
 	version: module.version,

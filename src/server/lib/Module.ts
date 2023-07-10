@@ -9,6 +9,7 @@ type VersionData = {
 export default class Module {
 	private moduleName: string;
 
+	public _id: string = '';
 	public icon: string = '';
 	public label: string = '';
 	public version: VersionData = {
@@ -28,6 +29,7 @@ export default class Module {
 		const module = await db.collection<MetaObjects.Meta>('MetaObjects').findOne({ _id: this.moduleName });
 		if (module == null) throw new Error('Module not found');
 
+		this._id = module._id;
 		this.icon = module.icon;
 		this.label = module.label.pt_BR;
 
