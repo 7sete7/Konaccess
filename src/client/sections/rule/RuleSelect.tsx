@@ -6,6 +6,7 @@ import Box from '@mui/system/Box';
 import { useCallback, useMemo } from 'react';
 
 export interface RuleSelectProps {
+	value?: SelectionOpt | '';
 	label: string;
 	icon: IconDefinition;
 	opts: MetaObjects.Rule[];
@@ -13,7 +14,7 @@ export interface RuleSelectProps {
 }
 export type SelectionOpt = MetaObjects.Rule;
 
-const RuleSelect: React.FC<RuleSelectProps> = ({ label, icon, opts, onRuleSelect }) => {
+const RuleSelect: React.FC<RuleSelectProps> = ({ value = '', label, icon, opts, onRuleSelect }) => {
 	const option = useCallback((opt: SelectionOpt, node: React.ReactNode) => (opts.includes(opt) ? node : []), [opts]);
 	const selectItems = useMemo<React.ReactNode[]>(
 		() =>
@@ -61,7 +62,7 @@ const RuleSelect: React.FC<RuleSelectProps> = ({ label, icon, opts, onRuleSelect
 				</Stack>
 			</Box>
 			<Box py={1} px={2}>
-				<Select variant="standard" onChange={onSelectChange}>
+				<Select variant="standard" onChange={onSelectChange} value={value}>
 					{selectItems}
 				</Select>
 			</Box>

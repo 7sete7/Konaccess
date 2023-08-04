@@ -23,7 +23,7 @@ const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
 	const selectModule = useCallback<ConsumerFns['selectModule']>(
 		moduleName => {
-			setState(current => ({ ...current, module: moduleName }));
+			setState(current => ({ ...current, module: moduleName, rule: null }));
 		},
 		[setState],
 	);

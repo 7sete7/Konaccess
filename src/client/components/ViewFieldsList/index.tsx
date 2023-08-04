@@ -14,24 +14,20 @@ type OnFieldClick = (name: string) => () => void;
 type IsSelected = (name: string) => boolean;
 
 interface ViewListProps {
+	selected: string[];
 	onSelectedChanged: (newSelecteds: string[]) => void;
 }
 
-const ViewList: React.FC<ViewListProps> = ({ onSelectedChanged }) => {
+const ViewList: React.FC<ViewListProps> = ({ selected, onSelectedChanged }) => {
 	const [{ module }] = useContext(AppContext);
 	const [viewSections, setViewSections] = useState<KonectyClient.ViewSection[]>([]);
-	const [selected, setSelected] = useState<string[]>([]);
 
 	const onFieldClick = useCallback<OnFieldClick>(
 		name => () => {
-			setSelected(selecteds => {
-				const newValue = xor(selecteds, [name]);
-				onSelectedChanged(newValue);
-
-				return newValue;
-			});
+			const newValue = xor(selected, [name]);
+			onSelectedChanged(newValue);
 		},
-		[setSelected],
+		[selected],
 	);
 
 	const isSelected = useCallback<IsSelected>(name => selected.includes(name), [selected]);
@@ -42,20 +38,20 @@ const ViewList: React.FC<ViewListProps> = ({ onSelectedChanged }) => {
 		}
 	}, [module]);
 
-	const selectedFields = useMemo(
-		() =>
-			viewSections.reduce<KonectyClient.ViewField[]>((acc, { fields }) => {
-				const selectedFields = fields.filter(f => isSelected(f.name));
-				return selectedFields.length ? acc.concat(selectedFields) : acc;
-			}, []),
-		[selected],
-	);
+	const selectedFields = useMemo(() => {
+		if (viewSections.length === 0) return [];
+
+		return viewSections.reduce<KonectyClient.ViewField[]>((acc, { fields }) => {
+			const selectedFields = fields.filter(f => isSelected(f.name));
+			return selectedFields.length ? acc.concat(selectedFields) : acc;
+		}, []);
+	}, [selected, viewSections]);
 
 	return (
 		<Fragment>
 			<FieldSection icon="star" label="Selecionados" fields={selectedFields} {...{ onFieldClick, isSelected }} />
 			{viewSections.map(section => (
-				<FieldSection {...section} {...{ onFieldClick, isSelected }} />
+				<FieldSection key={section.label} {...section} {...{ onFieldClick, isSelected }} />
 			))}
 		</Fragment>
 	);

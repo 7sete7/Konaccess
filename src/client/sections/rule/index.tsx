@@ -2,7 +2,7 @@ import { faEye, faPencil, faPlusCircle } from '@fortawesome/free-solid-svg-icons
 import { Button, Container, Divider, Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/system/Box';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import Section from '../../components/Section';
 import ViewFieldsList from '../../components/ViewFieldsList';
 import { AppContext } from '../../context';
@@ -47,6 +47,15 @@ const RuleSection: React.FC = () => {
 		console.log(selectionState);
 	}, [rule, selectionState]);
 
+	useEffect(() => {
+		if (rule == null) return;
+
+		setSelectionState({
+			rules: rule.options,
+			fields: rule.fields,
+		});
+	}, [rule]);
+
 	if (rule == null) return null;
 
 	return (
@@ -60,12 +69,14 @@ const RuleSection: React.FC = () => {
 								icon={faEye}
 								opts={['all', 'none', 'only-owner', 'within-group', 'within-additional-groups', 'inherit']}
 								onRuleSelect={onRuleSelect('view')}
+								value={selectionState.rules?.view}
 							/>
 							<RuleSelect
 								label="Pode editar"
 								icon={faPencil}
 								opts={['all', 'none', 'only-owner', 'within-group', 'within-additional-groups', 'inherit']}
 								onRuleSelect={onRuleSelect('edit')}
+								value={selectionState.rules?.edit}
 							/>
 
 							<RuleSelect
@@ -73,6 +84,7 @@ const RuleSection: React.FC = () => {
 								icon={faPlusCircle}
 								opts={['all', 'none', 'inherit']}
 								onRuleSelect={onRuleSelect('create')}
+								value={selectionState.rules?.create}
 							/>
 						</Stack>
 					</Box>
@@ -91,7 +103,7 @@ const RuleSection: React.FC = () => {
 					Campos
 				</Typography>
 				<Container maxWidth="sm">
-					<ViewFieldsList onSelectedChanged={onFieldSelect} />
+					<ViewFieldsList selected={selectionState.fields} onSelectedChanged={onFieldSelect} />
 				</Container>
 			</Box>
 		</Section>
