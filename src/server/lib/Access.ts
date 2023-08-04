@@ -26,6 +26,7 @@ export default class KonAccess {
 
 		if (this.originalAccess?.rules == null && this.originalAccess?.fields != null) {
 			this.originalAccess.rules = this.convertToNewRules();
+			this.save();
 		}
 
 		return this;
@@ -59,7 +60,7 @@ export default class KonAccess {
 					rule: output
 						.split('|')
 						.map(v => v.split(':'))
-						.reduce((a, [k, v]) => ({ ...a, [k]: v }), {}) as MetaObjects.AccessRule['rule'],
+						.reduce((a, [k, v]) => ({ ...a, [k?.trim()]: v?.trim() }), {}) as MetaObjects.AccessRule['rule'],
 				};
 			}
 			acc[output].fields.push(fieldName);
@@ -72,4 +73,15 @@ export default class KonAccess {
 
 	public getRoleName = () => this.roleName;
 	public getRules = () => this.originalAccess?.rules ?? [];
+
+	public updateRule() {
+		this.save();
+	}
+
+	public async save() {
+		const db = await getDB();
+		await db
+			.collection<MetaObjects.Access>('MetaObjects')
+			.updateOne({ _id: `${this.moduleName}:access:${this.roleName}` }, { $set: { rules: this.getRules() } });
+	}
 }
