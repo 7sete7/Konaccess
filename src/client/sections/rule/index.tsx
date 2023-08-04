@@ -1,9 +1,8 @@
 import { faEye, faPencil, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { Container, Divider, Typography, useTheme } from '@mui/material';
+import { Button, Container, Divider, Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/system/Box';
-import { useCallback, useContext, useMemo, useState } from 'react';
-import { getModuleViewFor } from '../../DAL/Modules';
+import { useCallback, useContext, useState } from 'react';
 import Section from '../../components/Section';
 import ViewFieldsList from '../../components/ViewFieldsList';
 import { AppContext } from '../../context';
@@ -18,31 +17,42 @@ interface SelectionState {
 }
 
 const RuleSection: React.FC = () => {
-	const [{ rule, module }, { updateRule }] = useContext(AppContext);
+	const [{ rule }, { updateRule }] = useContext(AppContext);
 	const [selectionState, setSelectionState] = useState<SelectionState>({ rules: {}, fields: [] });
-	const viewSections = useMemo(() => getModuleViewFor(module!), [module]);
-	const theme = useTheme();
+	const [hasChanges, setHasChanges] = useState(false);
 
 	const onRuleSelect = useCallback<OnRuleSelect>(
-		prop => opt => setSelectionState(current => ({ ...current, rules: { ...current.rules, [prop]: opt } })),
+		prop => opt => {
+			setSelectionState(current => ({ ...current, rules: { ...current.rules, [prop]: opt } }));
+			setHasChanges(true);
+		},
 		[setSelectionState],
 	);
 
 	const onFieldSelect = useCallback<OnFieldSelect>(
-		fields => setSelectionState(current => ({ ...current, fields })),
+		fields => {
+			setSelectionState(current => ({ ...current, fields }));
+			setHasChanges(true);
+		},
 		[setSelectionState],
 	);
 
 	const onTitleChange = useCallback((newTitle: string) => {
 		updateRule({ label: newTitle.replace(/^Regra /, '') });
+		setHasChanges(true);
 	}, []);
+
+	const onSave = useCallback(() => {
+		console.log(rule);
+		console.log(selectionState);
+	}, [rule, selectionState]);
 
 	if (rule == null) return null;
 
 	return (
 		<Section title={`Regra ${rule.label}`} titleEditable onTitleChange={onTitleChange}>
 			<Container maxWidth="md">
-				<Stack spacing={2} divider={<Divider />}>
+				<Stack spacing={2}>
 					<Box py={2} px={3}>
 						<Stack spacing={3}>
 							<RuleSelect
@@ -65,6 +75,11 @@ const RuleSection: React.FC = () => {
 								onRuleSelect={onRuleSelect('create')}
 							/>
 						</Stack>
+					</Box>
+					<Box py={2} px={3} display="flex" justifyContent="flex-end">
+						<Button variant="contained" color="success" disableElevation disabled={!hasChanges} onClick={onSave}>
+							Salvar alterações
+						</Button>
 					</Box>
 				</Stack>
 			</Container>
