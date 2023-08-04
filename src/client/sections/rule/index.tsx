@@ -29,7 +29,7 @@ const RuleSection: React.FC = () => {
 	);
 
 	const onFieldSelect = useCallback<OnFieldSelect>(fields => {
-		updateRule({ fields });
+		updateRule({ fields, totalFields: fields.length });
 		setHasChanges(true);
 	}, []);
 
