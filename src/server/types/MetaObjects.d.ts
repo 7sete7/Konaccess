@@ -19,6 +19,7 @@ declare namespace MetaObjects {
 	export type Rule = 'all' | 'none' | 'only-owner' | 'within-group' | 'within-additional-groups' | 'inherit';
 
 	export interface AccessRule {
+		_id: string;
 		label: string;
 		fields: string[];
 		rule: {

@@ -59,7 +59,7 @@ export default class Module {
 			const roleName = accessDoc._id.split(':')[2];
 			const access = await new Access(this.moduleName, roleName).initialize();
 
-			this.accesses.set(roleName, access);
+			this.accesses.set(`${this._id}:${roleName}`, access);
 		}
 	}
 

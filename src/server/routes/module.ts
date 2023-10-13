@@ -48,7 +48,7 @@ const ModuleRoutes = router({
 });
 
 const convertRuleToClient = (rule: MetaObjects.AccessRule): KonectyClient.Rule => ({
-	_id: rule.label + Date.now(),
+	_id: rule._id,
 	label: rule.label,
 	fields: rule.fields,
 	totalFields: rule.fields.length,

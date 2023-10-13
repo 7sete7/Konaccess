@@ -4,19 +4,20 @@ import { saveRule as ruleSave } from '../DAL/Rules';
 interface AppState {
 	module: string | null;
 	rule: KonectyClient.Rule | null;
+	role: string | null;
 }
 
 interface ConsumerData extends AppState {}
 interface ConsumerFns {
 	selectModule: (moduleName: string) => void;
-	selectRule: (rule: KonectyClient.Rule) => void;
+	selectRule: (rule: KonectyClient.Rule, role: string) => void;
 	updateRule: (data: Partial<KonectyClient.Rule>) => void;
 	saveRule: () => void;
 }
 
 type ContextData = [ConsumerData, ConsumerFns];
 
-const initialData = { module: null, rule: null };
+const initialData = { module: null, rule: null, role: null };
 const noop = () => {};
 export const AppContext = createContext<ContextData>([
 	initialData,
@@ -34,8 +35,8 @@ const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
 	);
 
 	const selectRule = useCallback<ConsumerFns['selectRule']>(
-		rule => {
-			setState(current => ({ ...current, rule }));
+		(rule, role) => {
+			setState(current => ({ ...current, rule, role }));
 		},
 		[setState],
 	);
@@ -48,14 +49,14 @@ const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
 	);
 
 	const saveRule = useCallback<ConsumerFns['saveRule']>(async () => {
-		const { module, rule } = state;
-		if (module == null || rule == null) return;
+		const { module, rule, role } = state;
+		if (module == null || rule == null || role == null) return;
 
-		const success = await ruleSave(module, rule);
+		const success = await ruleSave(module, rule, role);
 		return success;
 	}, [state]);
 
-	const consumerData = useMemo<ConsumerData>(() => ({ module: state.module, rule: state.rule }), [state]);
+	const consumerData = useMemo<ConsumerData>(() => ({ module: state.module, rule: state.rule, role: state.role }), [state]);
 
 	return (
 		<AppContext.Provider value={[consumerData, { selectModule, selectRule, updateRule, saveRule }]}>

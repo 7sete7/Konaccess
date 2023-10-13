@@ -6,7 +6,7 @@ import { AppContext } from '../context';
 
 const MAX_DISPLAY_FIELDS = 5;
 
-const RuleCard: React.FC<KonectyClient.Rule> = ({ _id, label, fields, totalFields, options }) => {
+const RuleCard: React.FC<KonectyClient.Rule & { role: string }> = ({ _id, label, fields, totalFields, options, role }) => {
 	const [, { selectRule }] = useContext(AppContext);
 
 	return (
@@ -24,7 +24,7 @@ const RuleCard: React.FC<KonectyClient.Rule> = ({ _id, label, fields, totalField
 				}
 				sx={{ border: 0, borderColor: '', borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
 			/>
-			<CardActionArea onClick={() => selectRule({ _id, label, fields, totalFields, options })}>
+			<CardActionArea onClick={() => selectRule({ _id, label, fields, totalFields, options }, role)}>
 				<CardContent sx={{ bgcolor: 'grey.500', borderBottom: 0, borderTop: 0, borderColor: 'text.primary' }}>
 					<Box p={1} display="flex" flexDirection="column">
 						{fields.slice(0, MAX_DISPLAY_FIELDS).map(field => (

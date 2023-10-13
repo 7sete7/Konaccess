@@ -1,14 +1,16 @@
 import getDB from './db';
 
 export default class KonAccess {
-	private moduleName: string;
-	private roleName: string;
+	public readonly moduleName: string;
+	public readonly roleName: string;
+	public readonly _id: string;
 
 	private originalAccess: MetaObjects.Access | null = null;
 
 	constructor(moduleName: string, roleName: string) {
 		this.moduleName = moduleName;
 		this.roleName = roleName;
+		this._id = `${moduleName}:access:${roleName}`;
 	}
 
 	private async getOriginalAccess() {
@@ -55,6 +57,7 @@ export default class KonAccess {
 
 			if (acc[output] == null) {
 				acc[output] = {
+					_id: `${this.moduleName}:accessRule:${Math.random().toString(36).slice(2)}`,
 					label: output,
 					fields: [],
 					rule: output
@@ -74,7 +77,11 @@ export default class KonAccess {
 	public getRoleName = () => this.roleName;
 	public getRules = () => this.originalAccess?.rules ?? [];
 
-	public updateRule() {
+	public updateRule(rule: MetaObjects.AccessRule) {
+		const ruleIdx = this.getRules().findIndex(r => r._id === rule._id);
+		if (ruleIdx === -1) throw new Error(`Rule ${rule._id} not found`);
+
+		this.originalAccess!.rules![ruleIdx] = rule;
 		this.save();
 	}
 

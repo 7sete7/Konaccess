@@ -40,7 +40,7 @@ const RoleSection: React.FC = () => {
 										sx={{ width: { xs: '90%', sm: '70%', md: '40%', lg: '30%' } }}
 										key={rule._id}
 									>
-										<RuleCard {...rule} />
+										<RuleCard {...rule} role={_id} />
 									</Box>
 								))}
 							</Stack>
