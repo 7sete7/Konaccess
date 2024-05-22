@@ -1,30 +1,13 @@
-# React + TypeScript + Vite
+## Start dev Mongodb
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+```bash
+sudo docker run --rm -d --name=mongo-0 -p 27017:27017  -v ${PWD}/data:/data mongo:6 mongod --replSet rs0 --dbpath /data
+cp metas.json data/metas.json
 
-Currently, two official plugins are available:
+sudo docker exec -it $CONTAINER_ID bash
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+mongosh --eval 'rs.initiate({_id : "rs0", members: [ { _id: 0, host: "127.0.0.1:27017" } ] })'
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+cd /data
+mongoimport metas.json --jsonArray --db foxter --collection MetaObjects
 ```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
