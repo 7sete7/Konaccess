@@ -1,10 +1,9 @@
+const colors = require('tailwindcss/colors');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
   ],
   prefix: "",
@@ -15,6 +14,9 @@ module.exports = {
       screens: {
         "2xl": "1400px",
       },
+    },
+    colors: {
+      success: colors.emerald,
     },
     extend: {
       colors: {
