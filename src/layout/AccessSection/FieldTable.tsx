@@ -1,11 +1,28 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import OptionSelect from "@/components/OptionSelect";
-import { Eye, Pencil, PlusCircle } from "lucide-react";
+import { Eye, Pencil, PlusCircle, RefreshCcwDot } from "lucide-react";
 
-export default function FieldTable() {
+import { getView } from "@/api/Konecty";
+import { useQuery } from "react-query";
+
+type FieldTableProps = {
+  moduleName: string;
+  role: string;
+};
+
+export default function FieldTable({ moduleName, role }: FieldTableProps) {
+  const { isLoading, data, error } = useQuery(["view", moduleName], () => getView(moduleName));
+
+  if (isLoading || !data)
+    return (
+      <div className="flex justify-center items-center w-full h-44 text-gray-300">
+        <RefreshCcwDot size={48} className="animate-spin" />
+      </div>
+    );
+
   return (
-    <Table>
+    <Table className="table-fixed">
       <TableHeader>
         <TableRow>
           <TableHead>&nbsp;</TableHead>
@@ -24,21 +41,30 @@ export default function FieldTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {Array.from({ length: 40 }).map((_, i) => (
-          <TableRow key={i}>
-            <TableCell className="p-1">
-              <span>Código</span>
-            </TableCell>
-            <TableCell className="p-1">
-              <OptionSelect type="read" variant="table" />
-            </TableCell>
-            <TableCell className="p-1">
-              <OptionSelect type="edit" variant="table" />
-            </TableCell>
-            <TableCell className="p-1">
-              <OptionSelect type="create" variant="table" />
-            </TableCell>
-          </TableRow>
+        {data.map((section) => (
+          <>
+            <TableRow key={section.sectionTitle}>
+              <TableCell colSpan={4} className="font-bold">
+                {section.sectionTitle}
+              </TableCell>
+            </TableRow>
+            {section.fields.map((field, i) => (
+              <TableRow key={field.name}>
+                <TableCell className="p-1">
+                  <span>{field.label}</span>
+                </TableCell>
+                <TableCell className="p-1">
+                  <OptionSelect type="read" variant="table" />
+                </TableCell>
+                <TableCell className="p-1">
+                  <OptionSelect type="edit" variant="table" />
+                </TableCell>
+                <TableCell className="p-1">
+                  <OptionSelect type="create" variant="table" />
+                </TableCell>
+              </TableRow>
+            ))}
+          </>
         ))}
       </TableBody>
     </Table>

@@ -35,7 +35,7 @@ export default function App() {
           <ModuleControl />
 
           <section id="content" className="h-full">
-            <FieldTable />
+            <FieldTable moduleName="Product" role="Corretor" />
           </section>
 
           <ActionBar />
