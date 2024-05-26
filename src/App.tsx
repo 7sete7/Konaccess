@@ -7,17 +7,11 @@ import ModuleList from "@/layout/ModulesList";
 import RolesList from "@/layout/RolesList";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 
-import { getView } from "@/api/Konecty";
-import { useEffect } from "react";
 import "./globals.css";
 
 const NAV_DEFAULT_SIZE = 255;
 
 export default function App() {
-  useEffect(() => {
-    getView("Product").then(console.log);
-  });
-
   return (
     <ResizablePanelGroup direction="horizontal" className="max-h-dvh font-sans">
       <ResizablePanel defaultSize={NAV_DEFAULT_SIZE} collapsible={true} minSize={10} maxSize={20} collapsedSize={4}>

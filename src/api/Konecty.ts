@@ -1,4 +1,6 @@
+import parseMenu from "@/lib/parseMenu";
 import parseView from "@/lib/parseView";
+import { KonectyMenu } from "@/types/menu";
 import { KonectyModule } from "@/types/module";
 import { KonectyClient } from "@konecty/sdk/Client";
 
@@ -7,7 +9,7 @@ const konectyClient = new KonectyClient({
   accessKey: import.meta.env.VITE_KONECTY_TOKEN ?? "",
 });
 
-export const getView = async (moduleName: string) => {
+export const fetchView = async (moduleName: string) => {
   try {
     const view = await konectyClient.getForm(moduleName);
     if (view.success === false) {
@@ -23,6 +25,21 @@ export const getView = async (moduleName: string) => {
   } catch (error) {
     console.error(error);
     return null;
+  }
+};
+
+export const fetchModules = async () => {
+  try {
+    const menu = await konectyClient.getMenu();
+
+    if (menu.success === false) {
+      return [];
+    }
+
+    return parseMenu((menu.data ?? []) as unknown as KonectyMenu[]);
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 };
 

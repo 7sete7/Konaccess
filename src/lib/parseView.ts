@@ -11,10 +11,12 @@ export default function parseView(view: KonectyView, meta: KonectyModule) {
 
   for (let visual of view.visuals) {
     if (visual.type === "visualGroup") {
+      // Get the first "visual" children, if it is a "visualGroup" parse recursive
       if (visual.visuals[0].type === "visualGroup") {
         const items = parseView({ visuals: visual.visuals } as KonectyView, meta);
         parsedView.push(...items);
       } else {
+        // Otherwise, assume the children are fields - Nested
         const fields = getFieldsNested(visual);
         parsedView.push({
           sectionTitle: visual.label.pt_BR,

@@ -1,9 +1,11 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import OptionSelect from "@/components/OptionSelect";
-import { Eye, Pencil, PlusCircle, RefreshCcwDot } from "lucide-react";
+import { Eye, Pencil, PlusCircle } from "lucide-react";
 
-import { getView } from "@/api/Konecty";
+import { fetchView } from "@/api/Konecty";
+import Loader from "@/components/Loader";
+import { useMemo } from "react";
 import { useQuery } from "react-query";
 
 type FieldTableProps = {
@@ -12,14 +14,40 @@ type FieldTableProps = {
 };
 
 export default function FieldTable({ moduleName, role }: FieldTableProps) {
-  const { isLoading, data, error } = useQuery(["view", moduleName], () => getView(moduleName));
+  const { isLoading, data, error } = useQuery(["view", moduleName], () => fetchView(moduleName));
 
-  if (isLoading || !data)
-    return (
-      <div className="flex justify-center items-center w-full h-44 text-gray-300">
-        <RefreshCcwDot size={48} className="animate-spin" />
-      </div>
-    );
+  const FieldRows = useMemo(
+    () =>
+      data &&
+      data.map((section) => (
+        <>
+          <TableRow key={section.sectionTitle}>
+            <TableCell colSpan={4} className="font-bold">
+              {section.sectionTitle}
+            </TableCell>
+          </TableRow>
+          {section.fields.map((field, i) => (
+            <TableRow key={field.name + i}>
+              <TableCell className="p-1">
+                <span>{field.label}</span>
+              </TableCell>
+              <TableCell className="p-1">
+                <OptionSelect type="read" variant="table" />
+              </TableCell>
+              <TableCell className="p-1">
+                <OptionSelect type="edit" variant="table" />
+              </TableCell>
+              <TableCell className="p-1">
+                <OptionSelect type="create" variant="table" />
+              </TableCell>
+            </TableRow>
+          ))}
+        </>
+      )),
+    [data]
+  );
+
+  if (isLoading || !data) return <Loader />;
 
   return (
     <Table className="table-fixed">
@@ -40,33 +68,7 @@ export default function FieldTable({ moduleName, role }: FieldTableProps) {
           </TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
-        {data.map((section) => (
-          <>
-            <TableRow key={section.sectionTitle}>
-              <TableCell colSpan={4} className="font-bold">
-                {section.sectionTitle}
-              </TableCell>
-            </TableRow>
-            {section.fields.map((field, i) => (
-              <TableRow key={field.name}>
-                <TableCell className="p-1">
-                  <span>{field.label}</span>
-                </TableCell>
-                <TableCell className="p-1">
-                  <OptionSelect type="read" variant="table" />
-                </TableCell>
-                <TableCell className="p-1">
-                  <OptionSelect type="edit" variant="table" />
-                </TableCell>
-                <TableCell className="p-1">
-                  <OptionSelect type="create" variant="table" />
-                </TableCell>
-              </TableRow>
-            ))}
-          </>
-        ))}
-      </TableBody>
+      <TableBody>{FieldRows}</TableBody>
     </Table>
   );
 }
