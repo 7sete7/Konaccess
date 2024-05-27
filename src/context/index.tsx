@@ -3,29 +3,29 @@ import { createContext, useCallback, useMemo, useState } from "react";
 
 type ConsumerData = {
   selectedModule?: MenuDocument;
-  selectedRole?: string;
+  selectedAccess?: string;
 };
 
 type ConsumerFns = {
   selectModule: (name: MenuDocument) => void;
-  selectRole: (name: string) => void;
+  selectAccess: (name: string) => void;
 };
 
 const noop = () => {};
 
 type ContextData = [ConsumerData, ConsumerFns];
-const AppContext = createContext<ContextData>([{}, { selectModule: noop, selectRole: noop }]);
+const AppContext = createContext<ContextData>([{}, { selectModule: noop, selectAccess: noop }]);
 
 export function ContextProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<ConsumerData>({});
 
   const selectModule: ConsumerFns["selectModule"] = useCallback(
-    (name) => setState((prev) => ({ ...prev, selectedModule: name, selectedRole: undefined })),
+    (name) => setState((prev) => ({ ...prev, selectedModule: name, selectedAccess: undefined })),
     [setState]
   );
-  const selectRole: ConsumerFns["selectRole"] = useCallback((name) => setState((prev) => ({ ...prev, selectedRole: name })), [setState]);
+  const selectAccess: ConsumerFns["selectAccess"] = useCallback((name) => setState((prev) => ({ ...prev, selectedAccess: name })), [setState]);
 
-  const contextValue = useMemo<ContextData>(() => [state, { selectModule, selectRole }], [state, selectModule]);
+  const contextValue = useMemo<ContextData>(() => [state, { selectModule, selectAccess }], [state, selectModule]);
   return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;
 }
 

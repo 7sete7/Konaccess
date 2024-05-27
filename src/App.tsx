@@ -14,7 +14,7 @@ import "./globals.css";
 const NAV_DEFAULT_SIZE = 255;
 
 export default function App() {
-  const [{ selectedModule, selectedRole }] = useContext(AppContext);
+  const [{ selectedModule, selectedAccess }] = useContext(AppContext);
 
   return (
     <ResizablePanelGroup direction="horizontal" className="max-h-dvh font-sans">
@@ -33,7 +33,7 @@ export default function App() {
       )}
 
       <ResizablePanel id="fields-panel" order={3} defaultSize={NAV_DEFAULT_SIZE * 2} minSize={30}>
-        {selectedRole && (
+        {selectedAccess && (
           <ScrollArea type="always" dir="ltr" className="p-2 overflow-auto max-h-full min-h-svh flex flex-col">
             <ModuleControl />
 

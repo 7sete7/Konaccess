@@ -8,13 +8,13 @@ import { useCallback, useContext } from "react";
 import { useQuery } from "react-query";
 
 export default function RolesList() {
-  const [{ selectedModule, selectedRole }, { selectRole }] = useContext(AppContext);
+  const [{ selectedModule, selectedAccess }, { selectAccess }] = useContext(AppContext);
   const { data: accesses, isLoading } = useQuery(["roles", selectedModule], () => fetchAccesses(selectedModule!.name), {
     enabled: !!selectedModule,
   });
 
-  const isSelected = useCallback((name: string) => selectedRole === name, [selectedRole]);
-  const onSelect = useCallback((name: string) => () => selectRole(name), [selectRole]);
+  const isSelected = useCallback((name: string) => selectedAccess === name, [selectedAccess]);
+  const onSelect = useCallback((name: string) => () => selectAccess(name), [selectAccess]);
 
   if (isLoading || !accesses) return <Loader />;
 
