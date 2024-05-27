@@ -7,11 +7,15 @@ import ModuleList from "@/layout/ModulesList";
 import RolesList from "@/layout/RolesList";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 
+import { useContext } from "react";
+import AppContext from "./context";
 import "./globals.css";
 
 const NAV_DEFAULT_SIZE = 255;
 
 export default function App() {
+  const [{ selectedModule }] = useContext(AppContext);
+
   return (
     <ResizablePanelGroup direction="horizontal" className="max-h-dvh font-sans">
       <ResizablePanel defaultSize={NAV_DEFAULT_SIZE} collapsible={true} minSize={10} maxSize={20} collapsedSize={4}>
@@ -19,10 +23,14 @@ export default function App() {
       </ResizablePanel>
       <ResizableHandle withHandle />
 
-      <ResizablePanel defaultSize={NAV_DEFAULT_SIZE} collapsible={true} minSize={10} maxSize={20} collapsedSize={4}>
-        <RolesList />
-      </ResizablePanel>
-      <ResizableHandle withHandle />
+      {selectedModule && (
+        <>
+          <ResizablePanel defaultSize={NAV_DEFAULT_SIZE} collapsible={true} minSize={10} maxSize={20} collapsedSize={4}>
+            <RolesList />
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+        </>
+      )}
 
       <ResizablePanel defaultSize={NAV_DEFAULT_SIZE * 2} minSize={30}>
         <ScrollArea type="always" dir="ltr" className="p-2 overflow-auto max-h-full min-h-svh flex flex-col">
