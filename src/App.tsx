@@ -18,21 +18,21 @@ export default function App() {
 
   return (
     <ResizablePanelGroup direction="horizontal" className="max-h-dvh font-sans">
-      <ResizablePanel defaultSize={NAV_DEFAULT_SIZE} collapsible={true} minSize={10} maxSize={20} collapsedSize={4}>
+      <ResizablePanel id="module-panel" order={1} defaultSize={NAV_DEFAULT_SIZE} collapsible={true} minSize={10} maxSize={20} collapsedSize={5}>
         <ModuleList />
       </ResizablePanel>
       <ResizableHandle withHandle />
 
       {selectedModule && (
         <>
-          <ResizablePanel defaultSize={NAV_DEFAULT_SIZE} collapsible={true} minSize={10} maxSize={20} collapsedSize={4}>
+          <ResizablePanel id="roles-panel" order={2} defaultSize={NAV_DEFAULT_SIZE} collapsible={true} minSize={10} maxSize={20} collapsedSize={5}>
             <RolesList />
           </ResizablePanel>
           <ResizableHandle withHandle />
         </>
       )}
 
-      <ResizablePanel defaultSize={NAV_DEFAULT_SIZE * 2} minSize={30}>
+      <ResizablePanel id="fields-panel" order={3} defaultSize={NAV_DEFAULT_SIZE * 2} minSize={30}>
         {selectedRole && (
           <ScrollArea type="always" dir="ltr" className="p-2 overflow-auto max-h-full min-h-svh flex flex-col">
             <ModuleControl />

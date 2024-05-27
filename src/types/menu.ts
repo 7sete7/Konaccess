@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LabelSchema } from "./module";
 
 const MenuDocumentSchema = z.object({
   type: z.literal("document"),
@@ -6,13 +7,11 @@ const MenuDocumentSchema = z.object({
   name: z.string(),
   icon: z.string(),
 
-  label: z.object({
-    pt_BR: z.string(),
-    en: z.string(),
-  }),
+  label: LabelSchema.optional(),
 
   lists: z.array(z.record(z.string())),
   pivots: z.array(z.record(z.string())).optional(),
+  isChild: z.boolean().optional(),
 });
 
 export type MenuDocument = z.infer<typeof MenuDocumentSchema>;

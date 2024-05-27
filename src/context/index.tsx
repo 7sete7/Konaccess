@@ -1,12 +1,13 @@
+import { MenuDocument } from "@/types/menu";
 import { createContext, useCallback, useMemo, useState } from "react";
 
 type ConsumerData = {
-  selectedModule?: string;
+  selectedModule?: MenuDocument;
   selectedRole?: string;
 };
 
 type ConsumerFns = {
-  selectModule: (name: string) => void;
+  selectModule: (name: MenuDocument) => void;
   selectRole: (name: string) => void;
 };
 
@@ -18,8 +19,11 @@ const AppContext = createContext<ContextData>([{}, { selectModule: noop, selectR
 export function ContextProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<ConsumerData>({});
 
-  const selectModule = useCallback((name: string) => setState((prev) => ({ ...prev, selectedModule: name, selectedRole: undefined })), [setState]);
-  const selectRole = useCallback((name: string) => setState((prev) => ({ ...prev, selectedRole: name })), [setState]);
+  const selectModule: ConsumerFns["selectModule"] = useCallback(
+    (name) => setState((prev) => ({ ...prev, selectedModule: name, selectedRole: undefined })),
+    [setState]
+  );
+  const selectRole: ConsumerFns["selectRole"] = useCallback((name) => setState((prev) => ({ ...prev, selectedRole: name })), [setState]);
 
   const contextValue = useMemo<ContextData>(() => [state, { selectModule, selectRole }], [state, selectModule]);
   return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;

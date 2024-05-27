@@ -1,9 +1,7 @@
 import { KonectyMenu, MenuDocument } from "@/types/menu";
 import omit from "lodash/omit";
 
-type ParsedMenu = (MenuDocument & { isChild?: boolean })[];
-
-export default function parseMenu(menu: KonectyMenu[]): ParsedMenu {
+export default function parseMenu(menu: KonectyMenu[]): MenuDocument[] {
   const moduleList = menu
     .map((menuItem) => {
       if ("children" in menuItem) {
@@ -12,7 +10,7 @@ export default function parseMenu(menu: KonectyMenu[]): ParsedMenu {
 
       return menuItem;
     })
-    .flat() as ParsedMenu;
+    .flat();
 
   return moduleList;
 }

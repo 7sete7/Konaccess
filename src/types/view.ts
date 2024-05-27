@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LabelSchema } from "./module";
 
 const ViewField = z.object({
   fieldName: z.string(),
@@ -39,8 +40,8 @@ export const DocumentFormSchema = z.object({
   _id: z.string(),
   name: z.string(),
   document: z.string().optional(),
-  label: z.string(),
-  plurals: z.string(),
+  label: LabelSchema,
+  plurals: LabelSchema,
   visuals: z.array(DocumentFormVisualsSchema),
 });
 
