@@ -14,7 +14,7 @@ import "./globals.css";
 const NAV_DEFAULT_SIZE = 255;
 
 export default function App() {
-  const [{ selectedModule }] = useContext(AppContext);
+  const [{ selectedModule, selectedRole }] = useContext(AppContext);
 
   return (
     <ResizablePanelGroup direction="horizontal" className="max-h-dvh font-sans">
@@ -33,15 +33,17 @@ export default function App() {
       )}
 
       <ResizablePanel defaultSize={NAV_DEFAULT_SIZE * 2} minSize={30}>
-        <ScrollArea type="always" dir="ltr" className="p-2 overflow-auto max-h-full min-h-svh flex flex-col">
-          <ModuleControl />
+        {selectedRole && (
+          <ScrollArea type="always" dir="ltr" className="p-2 overflow-auto max-h-full min-h-svh flex flex-col">
+            <ModuleControl />
 
-          <section id="content" className="h-full">
-            <FieldTable moduleName="Product" role="Corretor" />
-          </section>
+            <section id="content" className="h-full">
+              <FieldTable moduleName="Product" role="Corretor" />
+            </section>
 
-          <ActionBar />
-        </ScrollArea>
+            <ActionBar />
+          </ScrollArea>
+        )}
       </ResizablePanel>
     </ResizablePanelGroup>
   );

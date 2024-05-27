@@ -17,7 +17,8 @@ module.exports = {
     },
     colors: {
       success: colors.emerald,
-      gray: colors.gray
+      gray: colors.gray,
+      white: colors.white,
     },
     extend: {
       colors: {
