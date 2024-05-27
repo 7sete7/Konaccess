@@ -1,14 +1,21 @@
-import LazyIcon from "@/components/LazyIcon";
+import { fetchAccesses } from "@/api/Konecty";
+import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
+import { CircleUserRound } from "lucide-react";
+import { useQuery } from "react-query";
 
-const ROLES: { name: string }[] = Array(10).fill({ name: "Corretor" });
+const moduleName = "Product";
 
-export default function ModuleList() {
+export default function RolesList() {
+  const { data: accesses, isLoading, error } = useQuery(["roles", moduleName], () => fetchAccesses(moduleName));
+
+  if (isLoading || !accesses) return <Loader />;
+
   return (
     <nav className="grid gap-1 p-2">
-      {ROLES.map(({ name }, i) => (
+      {accesses.map(({ name }, i) => (
         <Button key={i} variant="link" className="justify-start flex gap-1 align-baseline">
-          <LazyIcon name="circle-user-round" size={20} />
+          <CircleUserRound size={20} />
           {name}
         </Button>
       ))}

@@ -6,6 +6,11 @@ const MenuDocumentSchema = z.object({
   name: z.string(),
   icon: z.string(),
 
+  label: z.object({
+    pt_BR: z.string(),
+    en: z.string(),
+  }),
+
   lists: z.array(z.record(z.string())),
   pivots: z.array(z.record(z.string())).optional(),
 });

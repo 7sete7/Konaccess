@@ -14,11 +14,11 @@ export default function ModuleList() {
   return (
     <nav className="grid gap-1 p-2">
       <ScrollArea type="scroll" dir="ltr">
-        {modules.map(({ name, icon, isChild }, i) => (
+        {modules.map(({ name, icon, label, isChild }, i) => (
           <Button key={i} variant="link" className={cn("justify-start flex gap-1 align-baseline", isChild && "text-xs")}>
             {isChild && <span className="w-4" />}
-            <LazyIcon name={icon} size={20} />
-            {name}
+            <LazyIcon name={icon} size={20} color={isChild ? "gray" : undefined} />
+            {label?.pt_BR ?? name}
           </Button>
         ))}
       </ScrollArea>

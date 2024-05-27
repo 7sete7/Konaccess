@@ -13,11 +13,13 @@ export const fetchView = async (moduleName: string) => {
   try {
     const view = await konectyClient.getForm(moduleName);
     if (view.success === false) {
+      console.error(view);
       return null;
     }
 
     const module = await konectyClient.getDocument(view.data.document);
     if (module.success === false) {
+      console.error(module);
       return null;
     }
 
@@ -33,10 +35,27 @@ export const fetchModules = async () => {
     const menu = await konectyClient.getMenu();
 
     if (menu.success === false) {
+      console.error(menu);
       return [];
     }
 
     return parseMenu((menu.data ?? []) as unknown as KonectyMenu[]);
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+export const fetchAccesses = async (moduleName: string) => {
+  try {
+    const accesses = await konectyClient.getAccesses(moduleName);
+
+    if (accesses.success === false) {
+      console.error(accesses);
+      return [];
+    }
+
+    return accesses.data;
   } catch (error) {
     console.error(error);
     return [];
