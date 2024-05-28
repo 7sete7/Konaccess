@@ -5,23 +5,22 @@ import { Eye, Pencil, PlusCircle } from "lucide-react";
 
 import { fetchView } from "@/api/Konecty";
 import Loader from "@/components/Loader";
-import { useMemo } from "react";
+import AppContext from "@/context";
+import { Fragment, useContext, useMemo } from "react";
 import { useQuery } from "react-query";
 
-type FieldTableProps = {
-  moduleName: string;
-  role: string;
-};
-
-export default function FieldTable({ moduleName, role }: FieldTableProps) {
-  const { isLoading, data, error } = useQuery(["view", moduleName], () => fetchView(moduleName));
+export default function FieldTable() {
+  const [{ selectedModule, selectedAccess }] = useContext(AppContext);
+  const { isLoading, data } = useQuery(["view", selectedModule?.name], () => fetchView(selectedModule!.name), {
+    enabled: selectedModule != null && selectedAccess != null,
+  });
 
   const FieldRows = useMemo(
     () =>
       data &&
       data.map((section) => (
-        <>
-          <TableRow key={section.sectionTitle}>
+        <Fragment key={section.sectionTitle}>
+          <TableRow>
             <TableCell colSpan={4} className="font-bold">
               {section.sectionTitle}
             </TableCell>
@@ -42,12 +41,12 @@ export default function FieldTable({ moduleName, role }: FieldTableProps) {
               </TableCell>
             </TableRow>
           ))}
-        </>
+        </Fragment>
       )),
     [data]
   );
 
-  if (isLoading || !data) return <Loader />;
+  if (selectedAccess != null && (isLoading || !data)) return <Loader />;
 
   return (
     <Table className="table-fixed">
@@ -68,7 +67,7 @@ export default function FieldTable({ moduleName, role }: FieldTableProps) {
           </TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>{FieldRows}</TableBody>
+      <TableBody>{selectedAccess != null ? FieldRows : null}</TableBody>
     </Table>
   );
 }

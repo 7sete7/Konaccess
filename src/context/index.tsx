@@ -1,14 +1,15 @@
+import Access from "@/lib/Access";
 import { MenuDocument } from "@/types/menu";
 import { createContext, useCallback, useMemo, useState } from "react";
 
 type ConsumerData = {
   selectedModule?: MenuDocument;
-  selectedAccess?: string;
+  selectedAccess?: Access;
 };
 
 type ConsumerFns = {
   selectModule: (name: MenuDocument) => void;
-  selectAccess: (name: string) => void;
+  selectAccess: (name: Access) => void;
 };
 
 const noop = () => {};
@@ -23,7 +24,7 @@ export function ContextProvider({ children }: { children: React.ReactNode }) {
     (name) => setState((prev) => ({ ...prev, selectedModule: name, selectedAccess: undefined })),
     [setState]
   );
-  const selectAccess: ConsumerFns["selectAccess"] = useCallback((name) => setState((prev) => ({ ...prev, selectedAccess: name })), [setState]);
+  const selectAccess: ConsumerFns["selectAccess"] = useCallback((item) => setState((prev) => ({ ...prev, selectedAccess: item })), [setState]);
 
   const contextValue = useMemo<ContextData>(() => [state, { selectModule, selectAccess }], [state, selectModule]);
   return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;

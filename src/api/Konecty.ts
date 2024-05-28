@@ -1,3 +1,4 @@
+import Access from "@/lib/Access";
 import parseMenu from "@/lib/parseMenu";
 import parseView from "@/lib/parseView";
 import { KonectyMenu } from "@/types/menu";
@@ -55,7 +56,7 @@ export const fetchAccesses = async (moduleName: string) => {
       return [];
     }
 
-    return accesses.data;
+    return accesses.data?.map((metaAccess) => new Access(metaAccess)) ?? [];
   } catch (error) {
     console.error(error);
     return [];

@@ -482,10 +482,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@konecty/sdk@^1.23.0":
-  version "1.23.0"
-  resolved "https://registry.yarnpkg.com/@konecty/sdk/-/sdk-1.23.0.tgz#e300a8782da3178e898272c2ddead830f6604cca"
-  integrity sha512-lAG+YYG2hjTU78dy+yEPxk9MrhKWjIrQ2r1494qsPfs4SLNuc6GUEJIlLNLl8csuVYDhehKhZcdd3yKVJ5JliA==
+"@konecty/sdk@^1.23.1":
+  version "1.23.1"
+  resolved "https://registry.yarnpkg.com/@konecty/sdk/-/sdk-1.23.1.tgz#ea9c909716ad4b07331c96554a91255316f83648"
+  integrity sha512-j0qpcYhIBBXicgv3OMGmz3MNYkEwhqyVETQVxyDUKAN3ggUDTL3Sd0lnxiYDoOoGOoseuAps5A/MMTOe+9/Khw==
   dependencies:
     "@types/luxon" "^2.3.2"
     bluebird "^3.7.2"
