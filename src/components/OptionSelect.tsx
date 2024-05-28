@@ -17,11 +17,11 @@ const selectTypes = {
   },
 };
 
-const ACCESS_OPTS = ["Apenas o responsável", "O responsável e seu gerente", "O responsável e seus superiores", "Todos os usuários"];
-
 type OptionSelectProps = {
   type: keyof typeof selectTypes;
   variant: keyof typeof variants;
+  value?: string;
+  onChange?: (value: string) => void;
 };
 
 const variants = {
@@ -39,24 +39,24 @@ const variants = {
   },
 };
 
-export default function OptionSelect({ type, variant }: OptionSelectProps) {
+export default function OptionSelect({ type, variant, value, onChange }: OptionSelectProps) {
   const { icon: Icon, label } = selectTypes[type];
   const { withLabel, withIcon, withBorder, placeholder } = variants[variant];
 
   return (
     <>
       {withLabel && <label className="block text-sm mb-2">{label}</label>}
-      <Select>
+      <Select onValueChange={onChange} value={value} defaultValue="any">
         <SelectTrigger className={cn("py-1 px-2", withBorder === false && "border-0")}>
           {withIcon && <Icon size={16} />}
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
-          {ACCESS_OPTS.map((opt) => (
-            <SelectItem key={opt} value={opt}>
-              {opt}
-            </SelectItem>
-          ))}
+          <SelectItem value="any">Todos os usuários</SelectItem>
+          <SelectItem value="only-_user">Apenas o responsável</SelectItem>
+          <SelectItem value="_user-and-group">O responsável e seu gerente</SelectItem>
+          <SelectItem value="_user-and-allgroups">O responsável e seus superiores</SelectItem>
+          <SelectItem value="none">Não pode</SelectItem>
         </SelectContent>
       </Select>
     </>

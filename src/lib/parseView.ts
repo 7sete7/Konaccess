@@ -1,7 +1,7 @@
 import { KonectyModule } from "@/types/module";
 import { KonectyView, ViewField } from "@/types/view";
 
-type ParsedView = Array<{
+export type ParsedView = Array<{
   sectionTitle: string;
   fields: { name: string; label: string }[];
 }>;

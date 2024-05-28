@@ -3,6 +3,7 @@ import { FieldAccess, MetaAccess } from "node_modules/@konecty/sdk/dist/sdk/type
 import { KonCondition } from "node_modules/@konecty/sdk/dist/sdk/types/filter";
 
 export type AccessFieldOptions = (typeof Access.fieldOptions)[number];
+export type AccessOperations = keyof FieldAccess;
 
 export default class Access {
   _id: string;
@@ -11,7 +12,7 @@ export default class Access {
 
   static fieldOptions = ["any", "only-_user", "_user-and-group", "_user-and-allgroups", "none"] as const;
 
-  fields: Record<string, AccessFieldOptions> = {};
+  fields: Record<string, Partial<Record<AccessOperations, AccessFieldOptions>>> = {};
   readFilter?: AccessFieldOptions;
   updateFilter?: AccessFieldOptions;
 
@@ -38,13 +39,13 @@ export default class Access {
 
     this.fields = Object.entries(this.raw.fields ?? {}).reduce<typeof this.fields>((acc, [fieldName, fieldOperations]) => {
       for (const operation in fieldOperations) {
-        const fieldValue = fieldOperations[operation as keyof FieldAccess];
+        const fieldValue = fieldOperations[operation as AccessOperations];
 
         if (fieldValue.condition) {
           const accessOpt = parseCondition(fieldValue.condition);
 
           if (accessOpt) {
-            acc[fieldName] = Object.assign(acc[fieldName] ?? {}, { [operation]: accessOpt });
+            acc[fieldName] = { ...acc[fieldName], [operation]: accessOpt };
           } else {
             console.warn(`Unknown condition: ${fieldValue.condition}`);
           }
@@ -52,7 +53,7 @@ export default class Access {
           continue;
         }
 
-        acc[fieldName] = Object.assign(acc[fieldName] ?? {}, { [operation]: fieldValue.allow ? "any" : "none" });
+        acc[fieldName] = { ...acc[fieldName], [operation]: fieldValue.allow === false ? "none" : "any" };
       }
       return acc;
     }, {});
@@ -63,5 +64,13 @@ export default class Access {
     ] as const) {
       this[operation] = filter && filter.conditions?.[0] ? parseCondition(filter.conditions[0]) : "any";
     }
+  }
+
+  public getFieldValue(fieldName: string, operation: AccessOperations) {
+    return this.fields[fieldName]?.[operation] ?? "any";
+  }
+
+  public setFieldValue(fieldName: string, operation: AccessOperations, value: AccessFieldOptions) {
+    this.fields[fieldName] = { ...this.fields[fieldName], [operation]: value };
   }
 }

@@ -1,13 +1,13 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Fragment, useContext, useMemo } from "react";
+import { useQuery } from "react-query";
 
-import OptionSelect from "@/components/OptionSelect";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Eye, Pencil, PlusCircle } from "lucide-react";
 
 import { fetchView } from "@/api/Konecty";
 import Loader from "@/components/Loader";
 import AppContext from "@/context";
-import { Fragment, useContext, useMemo } from "react";
-import { useQuery } from "react-query";
+import FieldRow from "@/layout/AccessSection/FieldRow";
 
 export default function FieldTable() {
   const [{ selectedModule, selectedAccess }] = useContext(AppContext);
@@ -26,20 +26,7 @@ export default function FieldTable() {
             </TableCell>
           </TableRow>
           {section.fields.map((field, i) => (
-            <TableRow key={field.name + i}>
-              <TableCell className="p-1">
-                <span>{field.label}</span>
-              </TableCell>
-              <TableCell className="p-1">
-                <OptionSelect type="read" variant="table" />
-              </TableCell>
-              <TableCell className="p-1">
-                <OptionSelect type="edit" variant="table" />
-              </TableCell>
-              <TableCell className="p-1">
-                <OptionSelect type="create" variant="table" />
-              </TableCell>
-            </TableRow>
+            <FieldRow key={i} field={field} />
           ))}
         </Fragment>
       )),
@@ -50,7 +37,7 @@ export default function FieldTable() {
 
   return (
     <Table className="table-fixed">
-      <TableHeader>
+      <TableHeader className="sticky top-0">
         <TableRow>
           <TableHead>&nbsp;</TableHead>
           <TableHead className="text-center">
