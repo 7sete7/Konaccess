@@ -11,7 +11,7 @@ type FieldRowProps = {
   onFieldOptionChange: OnFieldOptionChange;
 };
 
-export default function FieldRow({ field, onFieldOptionChange, values }: FieldRowProps) {
+export default function FieldRow({ field, onFieldOptionChange, values = {} }: FieldRowProps) {
   return (
     <TableRow>
       <TableCell className="p-1">

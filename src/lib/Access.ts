@@ -60,6 +60,7 @@ export default class Access {
   }
 
   public parseModuleFilters() {
+    //TODO multiple conditions, currently using only the first one
     return {
       readFilter: this.raw.readFilter?.conditions?.[0] ? this.parseCondition(this.raw.readFilter.conditions[0]) : "any",
       updateFilter: this.raw.updateFilter?.conditions?.[0] ? this.parseCondition(this.raw.updateFilter.conditions[0]) : "any",
