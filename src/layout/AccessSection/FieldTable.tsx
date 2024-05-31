@@ -1,4 +1,5 @@
-import { Fragment, useContext, useMemo } from "react";
+import merge from "lodash/merge";
+import { Fragment, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -8,12 +9,32 @@ import { fetchView } from "@/api/Konecty";
 import Loader from "@/components/Loader";
 import AppContext from "@/context";
 import FieldRow from "@/layout/AccessSection/FieldRow";
+import { AccessFieldOptions, AccessOperations } from "@/lib/Access";
+
+export type FieldsState = Record<string, Partial<Record<AccessOperations, AccessFieldOptions>>>;
+export type OnFieldOptionChange = (fieldName: string, operation: AccessOperations) => (value: string) => void;
 
 export default function FieldTable() {
   const [{ selectedModule, selectedAccess }] = useContext(AppContext);
+  const [fieldsData, setFieldsData] = useState<FieldsState>({});
+
   const { isLoading, data } = useQuery(["view", selectedModule?.name], () => fetchView(selectedModule!.name), {
     enabled: selectedModule != null && selectedAccess != null,
   });
+
+  useEffect(() => {
+    if (selectedAccess == null) return;
+
+    const fieldsData = selectedAccess.parseRawFields();
+    setFieldsData(fieldsData);
+  }, [selectedAccess?._id]);
+
+  const onFieldOptionChange = useCallback<OnFieldOptionChange>(
+    (fieldName, operation) => (value) => {
+      setFieldsData((fd) => merge(fd, { [fieldName]: { [operation]: value } }));
+    },
+    [setFieldsData]
+  );
 
   const FieldRows = useMemo(
     () =>
@@ -26,11 +47,11 @@ export default function FieldTable() {
             </TableCell>
           </TableRow>
           {section.fields.map((field, i) => (
-            <FieldRow key={i} field={field} />
+            <FieldRow key={i} field={field} onFieldOptionChange={onFieldOptionChange} values={fieldsData[field.name]} />
           ))}
         </Fragment>
       )),
-    [data]
+    [data, fieldsData]
   );
 
   if (selectedAccess != null && (isLoading || !data)) return <Loader />;

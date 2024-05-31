@@ -5,6 +5,12 @@ import { KonCondition } from "node_modules/@konecty/sdk/dist/sdk/types/filter";
 export type AccessFieldOptions = (typeof Access.fieldOptions)[number];
 export type AccessOperations = keyof FieldAccess;
 
+const conditionMap: Record<string, AccessFieldOptions> = {
+  "_user._id | equals | $user": "only-_user",
+  "_user.group._id | equals | $group": "_user-and-group",
+  "_user.group._id | in | $allgroups": "_user-and-allgroups",
+};
+
 export default class Access {
   _id: string;
   label: string;
@@ -20,29 +26,21 @@ export default class Access {
     this._id = metaAccess._id;
     this.label = metaAccess.name;
     this.raw = pick(metaAccess, ["fields", "readFilter", "updateFilter"]);
-
-    this.parseRawFields();
   }
 
-  private parseRawFields() {
-    const conditionMap: Record<string, AccessFieldOptions> = {
-      "_user._id | equals | $user": "only-_user",
-      "_user.group._id | equals | $group": "_user-and-group",
-      "_user.group._id | in | $allgroups": "_user-and-allgroups",
-    };
+  private parseCondition(condition: KonCondition) {
+    const { term, operator, value } = condition;
+    const conditionStr = `${term} | ${operator} | ${value}`;
+    return conditionMap[conditionStr];
+  }
 
-    const parseCondition = (condition: KonCondition) => {
-      const { term, operator, value } = condition;
-      const conditionStr = `${term} | ${operator} | ${value}`;
-      return conditionMap[conditionStr];
-    };
-
-    this.fields = Object.entries(this.raw.fields ?? {}).reduce<typeof this.fields>((acc, [fieldName, fieldOperations]) => {
+  public parseRawFields() {
+    const fields = Object.entries(this.raw.fields ?? {}).reduce<typeof this.fields>((acc, [fieldName, fieldOperations]) => {
       for (const operation in fieldOperations) {
         const fieldValue = fieldOperations[operation as AccessOperations];
 
         if (fieldValue.condition) {
-          const accessOpt = parseCondition(fieldValue.condition);
+          const accessOpt = this.parseCondition(fieldValue.condition);
 
           if (accessOpt) {
             acc[fieldName] = { ...acc[fieldName], [operation]: accessOpt };
@@ -58,19 +56,13 @@ export default class Access {
       return acc;
     }, {});
 
-    for (const [operation, filter] of [
-      ["readFilter", this.raw.readFilter],
-      ["updateFilter", this.raw.updateFilter],
-    ] as const) {
-      this[operation] = filter && filter.conditions?.[0] ? parseCondition(filter.conditions[0]) : "any";
-    }
+    return fields;
   }
 
-  public getFieldValue(fieldName: string, operation: AccessOperations) {
-    return this.fields[fieldName]?.[operation] ?? "any";
-  }
-
-  public setFieldValue(fieldName: string, operation: AccessOperations, value: AccessFieldOptions) {
-    this.fields[fieldName] = { ...this.fields[fieldName], [operation]: value };
+  public parseModuleFilters() {
+    return {
+      readFilter: this.raw.readFilter?.conditions?.[0] ? this.parseCondition(this.raw.readFilter.conditions[0]) : "any",
+      updateFilter: this.raw.updateFilter?.conditions?.[0] ? this.parseCondition(this.raw.updateFilter.conditions[0]) : "any",
+    };
   }
 }
