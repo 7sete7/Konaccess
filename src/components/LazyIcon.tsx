@@ -1,4 +1,4 @@
-import { Suspense, lazy, useMemo } from "react";
+import { Suspense, lazy, memo } from "react";
 
 import { cn } from "@/lib/utils";
 import { LucideProps, PersonStanding } from "lucide-react";
@@ -10,8 +10,8 @@ interface IconProps extends Omit<LucideProps, "ref"> {
 
 type IconKeys = keyof typeof dynamicIconImports;
 
-export default function LazyIcon({ name, ...props }: IconProps) {
-  const LucideIcon = useMemo(() => lazy(dynamicIconImports[name as IconKeys] ?? dynamicIconImports["person-standing"]) ?? <PersonStanding />, [name]);
+function LazyIcon({ name, ...props }: IconProps) {
+  const LucideIcon = lazy(dynamicIconImports[name as IconKeys] ?? dynamicIconImports["person-standing"]) ?? <PersonStanding />;
 
   return (
     <Suspense fallback={<div className={cn("h-1 bg-gray", props.size && `w-[${Number(props.size) * 3}px]`)} />}>
@@ -19,3 +19,5 @@ export default function LazyIcon({ name, ...props }: IconProps) {
     </Suspense>
   );
 }
+
+export default memo(LazyIcon);

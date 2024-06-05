@@ -4,6 +4,7 @@ import parseView from "@/lib/parseView";
 import { KonectyMenu } from "@/types/menu";
 import { KonectyModule } from "@/types/module";
 import { KonectyClient } from "@konecty/sdk/Client";
+import { UpdateAccessPayload } from "node_modules/@konecty/sdk/dist/sdk/types/access";
 
 const konectyClient = new KonectyClient({
   endpoint: import.meta.env.VITE_KONECTY_URL ?? "http://localhost:3000",
@@ -60,6 +61,17 @@ export const fetchAccesses = async (moduleName: string) => {
   } catch (error) {
     console.error(error);
     return [];
+  }
+};
+
+export const saveAccess = async (access: Access, data: UpdateAccessPayload) => {
+  try {
+    const res = await konectyClient.updateAccess(access.document, access.name, data);
+    if (res.success === false) {
+      console.error(res);
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 
