@@ -15,7 +15,7 @@ export type FieldsState = Record<string, Partial<Record<AccessOperations, Access
 export type OnFieldOptionChange = (fieldName: string, operation: AccessOperations) => (value: string) => void;
 
 export default function FieldTable() {
-  const [{ selectedModule, selectedAccess }] = useContext(AppContext);
+  const [{ selectedModule, selectedAccess }, { addSaveHook }] = useContext(AppContext);
   const [fieldsData, setFieldsData] = useState<FieldsState>({});
 
   const { isLoading, data } = useQuery(["view", selectedModule?.name], () => fetchView(selectedModule!.name), {
@@ -28,6 +28,10 @@ export default function FieldTable() {
     const fieldsData = selectedAccess.parseRawFields();
     setFieldsData(fieldsData);
   }, [selectedAccess?._id]);
+
+  useEffect(() => {
+    addSaveHook("fields-data", () => ({ fields: fieldsData }));
+  }, [fieldsData]);
 
   const onFieldOptionChange = useCallback<OnFieldOptionChange>(
     (fieldName, operation) => (value) => {

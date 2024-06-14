@@ -7,7 +7,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 type ModuleControlState = Record<"readFilter" | "updateFilter", AccessFieldOptions>;
 
 export default function ModuleControl() {
-  const [{ selectedModule, selectedAccess }] = useContext(AppContext);
+  const [{ selectedModule, selectedAccess }, { addSaveHook }] = useContext(AppContext);
   const [fieldsData, setFieldsData] = useState<ModuleControlState>({ readFilter: "any", updateFilter: "any" });
 
   useEffect(() => {
@@ -16,6 +16,10 @@ export default function ModuleControl() {
     const fieldsData = selectedAccess.parseModuleFilters();
     setFieldsData(fieldsData);
   }, [selectedAccess?._id]);
+
+  useEffect(() => {
+    addSaveHook("module-control", () => fieldsData);
+  }, [fieldsData]);
 
   const onFieldOptionChange = useCallback(
     (fieldName: keyof ModuleControlState) => (value: string) => {

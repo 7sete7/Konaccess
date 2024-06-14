@@ -4,7 +4,7 @@ import parseView from "@/lib/parseView";
 import { KonectyMenu } from "@/types/menu";
 import { KonectyModule } from "@/types/module";
 import { KonectyClient } from "@konecty/sdk/Client";
-import { UpdateAccessPayload } from "node_modules/@konecty/sdk/dist/sdk/types/access";
+import { UpdateAccessPayload } from "@konecty/sdk/types/access";
 
 const konectyClient = new KonectyClient({
   endpoint: import.meta.env.VITE_KONECTY_URL ?? "http://localhost:3000",
