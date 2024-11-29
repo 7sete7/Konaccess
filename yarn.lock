@@ -482,10 +482,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@konecty/sdk@^1.23.1":
-  version "1.23.1"
-  resolved "https://registry.yarnpkg.com/@konecty/sdk/-/sdk-1.23.1.tgz#ea9c909716ad4b07331c96554a91255316f83648"
-  integrity sha512-j0qpcYhIBBXicgv3OMGmz3MNYkEwhqyVETQVxyDUKAN3ggUDTL3Sd0lnxiYDoOoGOoseuAps5A/MMTOe+9/Khw==
+"@konecty/sdk@^1.24.1":
+  version "1.24.1"
+  resolved "https://registry.yarnpkg.com/@konecty/sdk/-/sdk-1.24.1.tgz#1168d6f7ce5e7b220d389f743e03c36c61c4af27"
+  integrity sha512-FW8PG/1w09HAZJgztFh8mNgp9ipzYrNoRCaplohOk7h9maxrzcUvklCkUDySeXYrHdBT18rWJhoDcpcIxkrcVA==
   dependencies:
     "@types/luxon" "^2.3.2"
     bluebird "^3.7.2"
@@ -2471,6 +2471,11 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
+next-themes@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/next-themes/-/next-themes-0.4.3.tgz#ea54552d5986936d177eed393ea50b658ae44800"
+  integrity sha512-nG84VPkTdUHR2YeD89YchvV4I9RbiMAql3GiLEQlPvq1ioaqPaIReK+yMRdg/zgiXws620qS1rU30TiWmmG9lA==
+
 node-fetch@^2.6.1:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.7.0.tgz#d0f0fa6e3e2dc1d27efcd8ad99d550bda94d187d"
@@ -3141,6 +3146,11 @@ sonic-boom@^2.2.0, sonic-boom@^2.2.1:
   integrity sha512-kuonw1YOYYNOve5iHdSahXPOK49GqwA+LZhI6Wz/l0rP57iKyXXIHaRagOBHAPmGwJC6od2Z9zgvZ5loSgMlVg==
   dependencies:
     atomic-sleep "^1.0.0"
+
+sonner@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/sonner/-/sonner-1.7.0.tgz#f59a2a70e049a179b6fbd1bb1bf2619d5ced07c0"
+  integrity sha512-W6dH7m5MujEPyug3lpI2l3TC3Pp1+LTgK0Efg+IHDrBbtEjyCmCHHo6yfNBOsf1tFZ6zf+jceWwB38baC8yO9g==
 
 source-map-js@^1.2.0:
   version "1.2.0"
