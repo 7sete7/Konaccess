@@ -10,7 +10,7 @@ import { useQuery } from "react-query";
 
 export default function RolesList() {
   const [{ selectedModule, selectedAccess }, { selectAccess }] = useContext(AppContext);
-  const { data: accesses, isLoading } = useQuery(["roles", selectedModule], () => fetchAccesses(selectedModule!.name), {
+  const { data: accesses, isLoading } = useQuery(["roles", selectedModule?._id], () => fetchAccesses(selectedModule!.name), {
     enabled: !!selectedModule,
   });
 

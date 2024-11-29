@@ -19,7 +19,7 @@ export default function parseView(view: KonectyView, meta: KonectyModule) {
         // Otherwise, assume the children are fields - Nested
         const fields = getFieldsNested(visual);
         parsedView.push({
-          sectionTitle: visual.label.pt_BR,
+          sectionTitle: visual.label?.pt_BR ?? "Section",
           fields: fields.map(({ fieldName }) => ({
             name: fieldName,
             label: getFieldLabel(fieldName, meta),
