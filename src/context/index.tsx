@@ -12,7 +12,7 @@ type ConsumerFns = {
   selectAccess: (name: Access) => void;
 
   addSaveHook: (key: string, hook: () => object) => void;
-  onSave: () => void;
+  onSave: () => ReturnType<Access["save"]>;
 };
 
 const saveHooks: Record<string, Parameters<ConsumerFns["addSaveHook"]>[1]> = {};
@@ -20,7 +20,10 @@ const saveHooks: Record<string, Parameters<ConsumerFns["addSaveHook"]>[1]> = {};
 const noop = () => {};
 
 type ContextData = [ConsumerData, ConsumerFns];
-const AppContext = createContext<ContextData>([{}, { selectModule: noop, selectAccess: noop, addSaveHook: noop, onSave: noop }]);
+const AppContext = createContext<ContextData>([
+  {},
+  { selectModule: noop, selectAccess: noop, addSaveHook: noop, onSave: () => Promise.resolve({ success: false, errors: [] }) },
+]);
 
 export function ContextProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<ConsumerData>({});
@@ -42,7 +45,7 @@ export function ContextProvider({ children }: { children: React.ReactNode }) {
       Object.assign(data, hook());
     }
 
-    state.selectedAccess?.save(data);
+    return state.selectedAccess!.save(data);
   }, [state.selectedAccess?._id]);
 
   const contextValue = useMemo<ContextData>(() => [state, { selectModule, selectAccess, addSaveHook, onSave }], [state, selectModule, selectAccess]);

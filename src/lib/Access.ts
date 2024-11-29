@@ -112,8 +112,7 @@ export default class Access {
       payload.updateFilter = allow && condition ? { match: "and", conditions: [condition] } : { allow, match: "and", conditions: [] };
     }
 
-    const result = await saveAccess(this, payload);
-    console.log(result);
+    return await saveAccess(this, payload);
   }
 }
 

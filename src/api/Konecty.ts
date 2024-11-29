@@ -66,12 +66,10 @@ export const fetchAccesses = async (moduleName: string) => {
 
 export const saveAccess = async (access: Access, data: UpdateAccessPayload) => {
   try {
-    const res = await konectyClient.updateAccess(access.document, access.name, data);
-    if (res.success === false) {
-      console.error(res);
-    }
+    return await konectyClient.updateAccess(access.document, access.name, data);
   } catch (error) {
     console.error(error);
+    return { success: false, errors: [{ message: (error as Error).message }] };
   }
 };
 
