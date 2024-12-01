@@ -1,17 +1,17 @@
-import { z } from "zod";
-import { LabelSchema } from "./module";
+import { z } from 'zod';
+import { LabelSchema } from './module';
 
 const MenuDocumentSchema = z.object({
-  type: z.literal("document"),
-  _id: z.string(),
-  name: z.string(),
-  icon: z.string(),
+	type: z.literal('document'),
+	_id: z.string(),
+	name: z.string(),
+	icon: z.string(),
 
-  label: LabelSchema.optional(),
+	label: LabelSchema.optional(),
 
-  lists: z.array(z.record(z.string())),
-  pivots: z.array(z.record(z.string())).optional(),
-  isChild: z.boolean().optional(),
+	lists: z.array(z.record(z.string())),
+	pivots: z.array(z.record(z.string())).optional(),
+	isChild: z.boolean().optional(),
 });
 
 export type MenuDocument = z.infer<typeof MenuDocumentSchema>;

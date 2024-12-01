@@ -1,20 +1,20 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Launch via package.json",
-      "request": "launch",
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Launch via package.json",
+			"request": "launch",
 
-      "envFile": "${workspaceFolder}/.env",
-      "runtimeExecutable": "yarn",
-      "runtimeArgs": ["start"],
+			"envFile": "${workspaceFolder}/.env",
+			"runtimeExecutable": "yarn",
+			"runtimeArgs": ["start"],
 
-      "skipFiles": ["<node_internals>/**"],
-      "console": "integratedTerminal",
-      "type": "node"
-    }
-  ]
+			"skipFiles": ["<node_internals>/**"],
+			"console": "integratedTerminal",
+			"type": "node"
+		}
+	]
 }
