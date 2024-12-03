@@ -1,33 +1,35 @@
 name: Publish
 on:
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: "Nova tag"
-        required: true
-      client:
-        description: "Cliente"
-        required: true
+    workflow_dispatch:
+        inputs:
+            tag:
+                description: 'Nova tag'
+                required: true
+            client:
+                description: 'Cliente'
+                required: true
 
 jobs:
-  publish:
-    name: "Build & Publish"
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
+    publish:
+        name: 'Build & Publish'
+        runs-on: ubuntu-latest
+        permissions:
+            id-token: write
+            contents: read
 
-    steps:
-      - name: Checkout production
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout production
+              uses: actions/checkout@v4
 
-      - name: Build & Upload to Backblaze
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          build-args: |
-            B2_APPKEY_ID=${{ secrets.B2_APPKEY_ID }}
-            B2_APPKEY=${{ secrets.B2_APPKEY }}
-            SOURCE_DIR=${{ vars.SOURCE_DIR }}
-            TARGET_DIR=${{ inputs.client }}
-            B2_BUCKET=${{ vars.B2_BUCKET }}
+            - name: Build & Upload to Backblaze
+              uses: docker/build-push-action@v5
+              env:
+                  VITE_KONECTY_URL: ${{ secrets[format('KONECTY_URL_{0}', inputs.client)] }}
+                  VITE_KONECTY_TOKEN: ${{ secrets[format('KONECTY_TOKEN_{0}', inputs.client)] }}
+              with:
+                  context: .
+                  build-args: |
+                      B2_APPKEY_ID=${{ secrets.B2_APPKEY_ID }}
+                      B2_APPKEY=${{ secrets.B2_APPKEY }}
+                      TARGET_DIR=${{ inputs.client }}
+                      B2_BUCKET=${{ vars.B2_BUCKET }}
