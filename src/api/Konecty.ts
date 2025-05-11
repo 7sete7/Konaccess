@@ -6,6 +6,8 @@ import { KonectyModule } from '@/types/module';
 import { KonectyClient } from '@konecty/sdk/Client';
 import { UpdateAccessPayload } from '@konecty/sdk/types/access';
 
+const moduleCache: Record<string, KonectyModule> = {};
+
 const konectyClient = new KonectyClient({
 	endpoint: import.meta.env.VITE_KONECTY_URL ?? 'http://localhost:3000',
 	accessKey: import.meta.env.VITE_KONECTY_TOKEN ?? '',
@@ -25,6 +27,7 @@ export const fetchView = async (moduleName: string) => {
 			return null;
 		}
 
+		moduleCache[moduleName] = module.data as unknown as KonectyModule;
 		return parseView(view.data, module.data as unknown as KonectyModule);
 	} catch (error) {
 		console.error(error);
@@ -62,6 +65,15 @@ export const fetchAccesses = async (moduleName: string) => {
 		console.error(error);
 		return [];
 	}
+};
+
+export const fetchModule = async (moduleName: string) => {
+	if (moduleCache[moduleName]) {
+		return moduleCache[moduleName];
+	}
+
+	const module = await konectyClient.getDocument(moduleName);
+	return module.data as unknown as KonectyModule;
 };
 
 export const saveAccess = async (access: Access, data: UpdateAccessPayload) => {

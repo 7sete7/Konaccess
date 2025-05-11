@@ -3,17 +3,17 @@ import { KonectyView, ViewField } from '@/types/view';
 
 export type ParsedView = Array<{
 	sectionTitle: string;
-	fields: { name: string; label: string }[];
+	fields: { name: string; label: string; type: string; descriptionFields?: string[] }[];
 }>;
 
-export default function parseView(view: KonectyView, meta: KonectyModule) {
+export default function parseView(view: KonectyView, meta: KonectyModule, isChild: boolean = false) {
 	const parsedView: ParsedView = [];
 
 	for (let visual of view.visuals) {
 		if (visual.type === 'visualGroup') {
 			// Get the first "visual" children, if it is a "visualGroup" parse recursive
 			if (visual.visuals[0].type === 'visualGroup') {
-				const items = parseView({ visuals: visual.visuals } as KonectyView, meta);
+				const items = parseView({ visuals: visual.visuals } as KonectyView, meta, true);
 				parsedView.push(...items);
 			} else {
 				// Otherwise, assume the children are fields - Nested
@@ -22,11 +22,20 @@ export default function parseView(view: KonectyView, meta: KonectyModule) {
 					sectionTitle: visual.label?.pt_BR ?? 'Section',
 					fields: fields.map(({ fieldName }) => ({
 						name: fieldName,
-						label: getFieldLabel(fieldName, meta),
+						...getFieldConfig(fieldName, meta),
 					})),
 				});
 			}
 		}
+	}
+
+	if (isChild) {
+		return parsedView.concat([
+			{
+				sectionTitle: 'Responsável',
+				fields: [{ name: '_user', label: 'Usuário', type: 'lookup' }],
+			},
+		]);
 	}
 
 	return parsedView;
@@ -45,8 +54,20 @@ const getFieldsNested = (visualGroup: KonectyView['visuals'][number]): ViewField
 	return getFieldsNested(visualGroup.visuals[0] as KonectyView['visuals'][number]);
 };
 
-const getFieldLabel = (fieldName: string, meta: KonectyModule) => {
+const getFieldConfig = (fieldName: string, meta: KonectyModule) => {
 	const fieldMeta = meta.fields.find(f => f.name === fieldName);
 
-	return fieldMeta?.label?.pt_BR ?? fieldName;
+	if (fieldMeta == null) {
+		console.warn(`Field ${fieldName} not found in module ${meta.name}`);
+		return {
+			label: `[${fieldName}!!]`,
+			type: 'text',
+		};
+	}
+
+	return {
+		label: fieldMeta.label?.pt_BR ?? fieldName,
+		type: fieldMeta.type,
+		descriptionFields: fieldMeta.descriptionFields,
+	};
 };

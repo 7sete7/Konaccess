@@ -14,10 +14,12 @@ const ModuleSchema = z.object({
 	fields: z
 		.object({
 			name: z.string(),
+			type: z.string(),
 			label: z.object({
 				en_US: z.string(),
 				pt_BR: z.string(),
 			}),
+			descriptionFields: z.array(z.string()).optional(),
 		})
 		.array(),
 });
